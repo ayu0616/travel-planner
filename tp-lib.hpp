@@ -36,6 +36,14 @@ struct Place
         arrive_before = 24 * 60 - 1;
         stay_time = 0;
     };
+
+    // @brief 訪問可能かどうかを判定する
+    // @param arrive_at 到着時刻
+    // @return 訪問可能ならtrue
+    bool is_visitable(ll arrive_at) const
+    {
+        return business_hours.start <= arrive_at && arrive_at + stay_time <= min(arrive_before + stay_time, business_hours.end);
+    };
 };
 
 /**
