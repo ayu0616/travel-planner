@@ -23,8 +23,10 @@ struct Place
     ll id;
     // 営業時間（なければ0時00分〜23時59分）
     BusinessHours business_hours;
-    // 到着したい時間
+    // 到着したい時間の上限
     ll arrive_before;
+    // 到着したい時間の下限
+    ll arrive_after;
     // 滞在時間（分）
     ll stay_time;
 
@@ -34,6 +36,7 @@ struct Place
     {
         id = -1;
         arrive_before = 24 * 60 - 1;
+        arrive_after = 0;
         stay_time = 0;
     };
 
@@ -42,7 +45,7 @@ struct Place
     // @return 訪問可能ならtrue
     bool is_visitable(ll arrive_at) const
     {
-        return business_hours.start <= arrive_at && arrive_at + stay_time <= min(arrive_before + stay_time, business_hours.end);
+        return max(business_hours.start, arrive_after) <= arrive_at && arrive_at + stay_time <= min(arrive_before + stay_time, business_hours.end);
     };
 };
 
