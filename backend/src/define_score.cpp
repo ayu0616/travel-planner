@@ -69,6 +69,7 @@ int main()
         if (is_goal(s) && (ans == nullptr || *s > *ans)) // スコアが高ければ解を更新
         {
             ans = s;
+            continue;
         }
         if (s->arrive_at + cp.stay_time + A[cp.id][0] > places[0].arrive_before)
         {
