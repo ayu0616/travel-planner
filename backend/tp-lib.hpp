@@ -138,7 +138,13 @@ vector<T *> trace_back(T *current_place)
 template <StateBaseType T>
 ostream &operator<<(ostream &os, const vector<T *> &vp)
 {
-    for (auto p : vp)
-        os << p->place->id << " " << p->arrive_at << endl;
+    rep(i, vp.size())
+    {
+        cout << vp[i]->place->id << " " << vp[i]->arrive_at;
+        if (i != vp.size() - 1)
+        {
+            cout << endl;
+        }
+    }
     return os;
 }
