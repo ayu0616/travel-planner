@@ -21,16 +21,11 @@ struct BusinessHours
 struct Place
 {
     ll id;
-    // 営業時間（なければ0時00分〜23時59分）
-    BusinessHours business_hours;
-    // 到着したい時間の上限
-    ll arrive_before;
-    // 到着したい時間の下限
-    ll arrive_after;
-    // 滞在時間（分）
-    ll stay_time;
-    // 行きたい度
-    int priority;
+    BusinessHours business_hours; // 営業時間（なければ0時00分〜23時59分）
+    ll arrive_before;             // 到着したい時間の上限
+    ll arrive_after;              // 到着したい時間の下限
+    ll stay_time;                 // 滞在時間（分）
+    int priority;                 // 行きたい度
 
     // @brief idで初期化
     // @param id 観光スポットのid
