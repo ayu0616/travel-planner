@@ -88,7 +88,7 @@ int main()
 
         rep(i, N)
         {
-            if (s->visited & (1 << i) || (i == 0 && s->visited_len() != N - 1))
+            if (s->visited >> i & 1 || (i == 0 && s->visited_len() != N - 1))
                 continue;
             double arrive_at = s->arrive_at + cp.stay_time + A[cp.id][i];
             if (!places[i].is_visitable(arrive_at))
