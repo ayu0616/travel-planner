@@ -11,7 +11,7 @@ struct BusinessHours
     BusinessHours()
     {
         start = 0;
-        end = 24 * 60 - 1;
+        end = 24 * 60 * 60 - 1;
     };
 
     BusinessHours(int start, int end) : start(start), end(end){};
@@ -108,9 +108,9 @@ struct Place
 {
     int id;
     BusinessHours business_hours; // 営業時間（なければ0時00分〜23時59分）
-    int arrive_before;             // 到着したい時間の上限
-    int arrive_after;              // 到着したい時間の下限
-    int stay_time;                 // 滞在時間（分）
+    int arrive_before;            // 到着したい時間の上限
+    int arrive_after;             // 到着したい時間の下限
+    int stay_time;                // 滞在時間（分）
     int priority;                 // 行きたい度
     double longitude;             // 経度
     double latitude;              // 緯度
@@ -120,7 +120,7 @@ struct Place
     Place()
     {
         id = -1;
-        arrive_before = 24 * 60 - 1;
+        arrive_before = 24 * 60 * 60 - 1;
         arrive_after = 0;
         stay_time = 0;
         priority = 1;
