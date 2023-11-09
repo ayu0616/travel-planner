@@ -8,7 +8,7 @@ vector<Place> places;
 struct State : public StateBase
 {
     // スコアは高いほうが良い
-    double score() const override
+    int score() const override
     {
         int s = 0;
         rep(i, N)
@@ -23,7 +23,7 @@ struct State : public StateBase
 int main()
 {
     cin >> N;
-    vector<vector<double>> A(N, vector<double>(N));
+    vector<vector<int>> A(N, vector<int>(N));
     rep(i, N) rep(j, N) cin >> A[i][j];
 
     places.resize(N);
@@ -90,7 +90,7 @@ int main()
         {
             if (s->visited >> i & 1 || (i == 0 && s->visited_len() != N - 1))
                 continue;
-            double arrive_at = s->arrive_at + cp.stay_time + A[cp.id][i];
+            int arrive_at = s->arrive_at + cp.stay_time + A[cp.id][i];
             if (!places[i].is_visitable(arrive_at))
                 continue;
             State *next = new State();
