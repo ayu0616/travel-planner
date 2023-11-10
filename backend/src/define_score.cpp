@@ -22,6 +22,7 @@ struct State : public StateBase
 
 int main()
 {
+    time_t start = time(nullptr);
     cin >> N;
     vector<vector<int>> A(N, vector<int>(N));
     rep(i, N) rep(j, N) cin >> A[i][j];
@@ -108,6 +109,7 @@ int main()
 
         cout << ans->arrive_at << endl;
         cout << visited_places << endl;
+        cerr << "time: " << time(nullptr) - start << "s" << endl;
     }
     else
     {
