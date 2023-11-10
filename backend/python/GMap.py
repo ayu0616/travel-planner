@@ -65,6 +65,29 @@ class GMap(googlemaps.Client):
         res = self.geocode(spot)
         return res[0]["geometry"]["location"]
 
+    def get_business_time(self, spot: str, date: datetime):
+        """
+        指定された場所の営業時間を取得する。
+
+        Args:
+            - spot (str): 場所の名前。
+            - date (datetime): 日付。
+
+        Returns:
+            - tuple[str, str]: 営業開始時間と営業終了時間。`("0000", "0000")`の形式。
+        """
+        place_search_res = super().places(spot, language="ja-JP", region="jp")
+        place_id = place_search_res["results"][0]["place_id"]
+        place_detail_res = super().place(place_id)
+        try:
+            business_hours = place_detail_res["result"]["opening_hours"]["periods"]
+            for business_hour in business_hours:
+                if business_hour["open"]["day"] == date.weekday():
+                    return business_hour["open"]["time"], business_hour["close"]["time"]
+        except KeyError:
+            pass
+        return None, None
+
 
 if __name__ == "__main__":
     import os
