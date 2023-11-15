@@ -1,0 +1,14 @@
+#! /usr/bin/env zsh
+
+files=(${(f)"$(git diff --name-only --cached --diff-filter=AM)"})
+cd $(dirname "$0")/../
+echo $PWD
+if npm run lint; then
+  echo "ESLint passed"
+  npm run format
+  cd ..
+  git add $files
+else
+  echo "ESLint failed"
+  exit 1
+fi
