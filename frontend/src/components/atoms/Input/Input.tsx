@@ -3,7 +3,13 @@ export interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttri
 }
 
 const Input = ({ type = "text", className = "", ...props }: InputProps) => {
-    return <input type={type} className={["focus:outline outline-green-800/50 outline-2 rounded px-2 py-1", className].join(" ").trim()} {...props} />;
+    return (
+        <input
+            type={type}
+            className={["focus:outline outline-green-800/50 outline-2 rounded px-3 py-2 caret-green-700", className].join(" ").trim()}
+            {...props}
+        />
+    );
 };
 
 export default Input;

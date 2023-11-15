@@ -1,4 +1,4 @@
-import Input from "./components/atoms/Input";
+import { Input } from "./components/atoms/Input";
 
 function App() {
     return (
