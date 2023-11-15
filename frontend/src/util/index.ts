@@ -1,1 +1,1 @@
-export * from './arrToClass';
+export * from './arrToClass'

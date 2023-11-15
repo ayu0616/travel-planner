@@ -1,11 +1,11 @@
 interface LabelProps
-  extends React.DetailedHTMLProps<
-    React.LabelHTMLAttributes<HTMLLabelElement>,
-    HTMLLabelElement
-  > {}
+    extends React.DetailedHTMLProps<
+        React.LabelHTMLAttributes<HTMLLabelElement>,
+        HTMLLabelElement
+    > {}
 
 const Label = ({ ...props }: LabelProps) => {
-  return <label {...props}></label>;
-};
+    return <label {...props}></label>
+}
 
-export default Label;
+export default Label

@@ -1,1 +1,1 @@
-export { default as InputWithLabel } from './InputWithLabel';
+export { default as InputWithLabel } from './InputWithLabel'
