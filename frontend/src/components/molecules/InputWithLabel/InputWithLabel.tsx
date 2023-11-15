@@ -1,4 +1,5 @@
 import { ChangeEventHandler, useId } from "react";
+import { arrToClass } from "../../../util";
 import { Input } from "../../atoms/Input";
 import { Label } from "../../atoms/Label";
 
@@ -14,7 +15,7 @@ const InputWithLabel = ({ id, children, className = "", ...props }: InputWithLab
     const useIdRes = useId();
     const _id = id ?? useIdRes;
     return (
-        <div className={["flex items-center gap-4", className].join(" ").trim()}>
+        <div className={arrToClass("flex items-center gap-4", className)}>
             <Label htmlFor={_id}>{children}</Label>
             <Input id={_id} {...props}></Input>
         </div>
