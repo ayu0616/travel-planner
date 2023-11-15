@@ -8,6 +8,7 @@ module.exports = {
         "plugin:storybook/recommended",
         "plugin:import/recommended",
         "plugin:import/warnings",
+        "prettier",
     ],
     ignorePatterns: ["dist", ".eslintrc.cjs"],
     parser: "@typescript-eslint/parser",
@@ -20,7 +21,7 @@ module.exports = {
     },
     settings: {
         "import/resolver": {
-            typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
+            typescript: {},
         },
     },
     rules: {
@@ -74,5 +75,6 @@ module.exports = {
         "prefer-template": "warn",
         "sort-keys-fix/sort-keys-fix": "warn",
         "typescript-sort-keys/interface": "warn",
+        quotes: ["warn", "single"],
     },
 };
