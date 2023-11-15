@@ -5,6 +5,9 @@
         }
     ],
     "settings": {
-        "prettier.tabWidth": 4
+        "prettier.tabWidth": 4,
+        "terminal.integrated.env.osx": {
+            "PATH": "${workspaceFolder}/bin:${env:PATH}"
+        }
     }
 }

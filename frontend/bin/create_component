@@ -1,0 +1,10 @@
+#!/bin/zsh
+for name in $@; do
+    cp -R ./src/components/template ./src/components/$name
+    cat ./src/components/$name/Template.tsx | sed -e "s/Template/$name/g" >./src/components/$name/$name.tsx
+    cat ./src/components/$name/Template.stories.tsx | sed -e "s/Template/$name/g" >./src/components/$name/$name.stories.tsx
+    rm ./src/components/$name/Template*.tsx
+
+    index_text="export { default as $name } from './$name';"
+    echo $index_text >./src/components/$name/index.ts
+done
