@@ -1,18 +1,78 @@
 module.exports = {
     root: true,
     env: { browser: true, es2020: true },
-    extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:react-hooks/recommended", "plugin:storybook/recommended"],
+    extends: [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:storybook/recommended",
+        "plugin:import/recommended",
+        "plugin:import/warnings",
+    ],
     ignorePatterns: ["dist", ".eslintrc.cjs"],
     parser: "@typescript-eslint/parser",
-    plugins: ["react-refresh"],
+    plugins: ["react-refresh", "typescript-sort-keys", "sort-keys-fix", "react"],
     parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
         project: ["./tsconfig.json", "./tsconfig.node.json"],
         tsconfigRootDir: __dirname,
     },
+    settings: {
+        "import/resolver": {
+            typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
+        },
+    },
     rules: {
         "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
         "@typescript-eslint/no-unused-vars": "warn",
+        "import/order": [
+            "warn",
+            {
+                groups: [
+                    "builtin", // 組み込みモジュール
+                    "external", // npmでインストールした外部ライブラリ
+                    "internal", // 自作モジュール
+                    ["parent", "sibling"],
+                    "object",
+                    "type",
+                    "index",
+                ],
+                "newlines-between": "always", // グループ毎にで改行を入れる
+                pathGroupsExcludedImportTypes: ["builtin"],
+                alphabetize: {
+                    order: "asc", // 昇順にソート
+                    caseInsensitive: true, // 小文字大文字を区別する
+                },
+                pathGroups: [
+                    // 指定した順番にソートされる
+                    {
+                        pattern: "@/components/common",
+                        group: "internal",
+                        position: "before",
+                    },
+                    {
+                        pattern: "@/components/hooks",
+                        group: "internal",
+                        position: "before",
+                    },
+                ],
+            },
+        ],
+        "react/jsx-sort-props": [
+            "warn",
+            {
+                callbacksLast: true,
+                shorthandFirst: true,
+                shorthandLast: false,
+                ignoreCase: true,
+                noSortAlphabetically: false,
+                reservedFirst: true,
+            },
+        ],
+        "react-hooks/rules-of-hooks": "off",
+        "prefer-template": "warn",
+        "sort-keys-fix/sort-keys-fix": "warn",
+        "typescript-sort-keys/interface": "warn",
     },
 };
