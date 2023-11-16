@@ -26,7 +26,9 @@ export const Default: Story = {
         const [values, setValues] = useState([''])
         return (
             <div className='space-y-4'>
-                <p>values: {JSON.stringify(values)}</p>
+                <p>
+                    values: <code>{JSON.stringify(values)}</code>
+                </p>
                 <SpotForm
                     values={values}
                     onChange={(v) => setValues(v)}
