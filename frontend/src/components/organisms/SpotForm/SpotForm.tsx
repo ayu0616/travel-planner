@@ -41,7 +41,10 @@ const SpotForm = ({ values = [''], onChange, ...props }: SpotFormProps) => {
                     >
                         {`スポット${idx + 1}`}
                     </InputWithLabel>
-                    <button onClick={() => handleRemove(idx)}>
+                    <button
+                        className='text-red-700'
+                        onClick={() => handleRemove(idx)}
+                    >
                         <FaRegTrashAlt />
                     </button>
                 </div>
