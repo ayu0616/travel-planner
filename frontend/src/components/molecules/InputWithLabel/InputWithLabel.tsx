@@ -9,6 +9,7 @@ interface InputWithLabelProps {
     className?: string
     id?: string
     onChange?: ChangeEventHandler<HTMLInputElement>
+    tabIndex?: number
     value?: string
 }
 
@@ -16,6 +17,7 @@ const InputWithLabel = ({
     id,
     children,
     className = '',
+    tabIndex,
     ...props
 }: InputWithLabelProps) => {
     const useIdRes = useId()
@@ -23,7 +25,7 @@ const InputWithLabel = ({
     return (
         <div className={arrToClass('flex items-center gap-4', className)}>
             <Label htmlFor={_id}>{children}</Label>
-            <Input id={_id} {...props}></Input>
+            <Input id={_id} tabIndex={tabIndex} {...props}></Input>
         </div>
     )
 }
