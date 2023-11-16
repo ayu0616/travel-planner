@@ -30,9 +30,8 @@ const SpotForm = ({ values = [''], onChange, ...props }: SpotFormProps) => {
     return (
         <div className='space-y-4'>
             {values.map((value, idx) => (
-                <div className='flex items-center gap-4'>
+                <div key={idx} className='flex items-center gap-4'>
                     <InputWithLabel
-                        key={idx}
                         tabIndex={1}
                         value={value}
                         onChange={(value) =>
