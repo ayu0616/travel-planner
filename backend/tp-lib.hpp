@@ -34,8 +34,7 @@ struct Latitude {
     Latitude() { latitude = 0; };
 
     void is_valid() {
-        if (latitude < -90 || 90 < latitude)
-            throw invalid_argument("latitude must be in [-90, 90]");
+        if (latitude < -90 || 90 < latitude) throw invalid_argument("latitude must be in [-90, 90]");
     };
 
     Latitude(double latitude) : latitude(latitude) { is_valid(); };
@@ -64,8 +63,7 @@ struct Longitude {
     Longitude() { longitude = 0; };
 
     void is_valid() {
-        if (longitude < -180 || 180 < longitude)
-            throw invalid_argument("longitude must be in [-180, 180]");
+        if (longitude < -180 || 180 < longitude) throw invalid_argument("longitude must be in [-180, 180]");
     };
 
     Longitude(double longitude) : longitude(longitude) { is_valid(); };
@@ -112,9 +110,7 @@ struct Place {
     // @param arrive_at 到着時刻
     // @return 訪問可能ならtrue
     bool is_visitable(ll arrive_at) const {
-        return max(business_hours.start, arrive_after) <= arrive_at &&
-               arrive_at + stay_time <=
-                   min(arrive_before + stay_time, business_hours.end);
+        return max(business_hours.start, arrive_after) <= arrive_at && arrive_at + stay_time <= min(arrive_before + stay_time, business_hours.end);
     };
 };
 
@@ -128,8 +124,7 @@ double calc_dist(Place &p1, Place &p2) {
     double lon1 = p1.longitude * M_PI / 180;
     double lon2 = p2.longitude * M_PI / 180;
     double R = 6378137;
-    double d = R * acos(sin(lat1) * sin(lat2) +
-                        cos(lat1) * cos(lat2) * cos(lon2 - lon1));
+    double d = R * acos(sin(lat1) * sin(lat2) + cos(lat1) * cos(lat2) * cos(lon2 - lon1));
     return d;
 }
 
