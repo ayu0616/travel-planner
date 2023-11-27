@@ -1,6 +1,17 @@
 // 旅行プラン立て機用のライブラリ
 
-#include "./lib.hpp"
+#include <bits/stdc++.h>
+using namespace std;
+
+// マクロの定義
+
+#define rep(i, n) for (int i = 0; i < (int)(n); i++)
+#define all(v) (v).begin(), (v).end()
+
+// 型の定義
+
+using ll = long long;
+
 
 // 営業時間を表す構造体
 struct BusinessHours

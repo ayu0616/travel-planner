@@ -1,4 +1,6 @@
 // スコアの定義を指定してみる
+#include <bits/stdc++.h>
+using namespace std;
 
 #include "../tp-lib.hpp"
 
