@@ -45,10 +45,7 @@ int main() {
     // ゴール判定
     auto is_goal = [&](State *s) { return s->visited == (1 << N) - 1; };
 
-    priority_queue<State *, vector<State *>, function<bool(State *, State *)>>
-        que([](State *s, State *t) {
-            return *s < *t;
-        });  // スコアが高い順に取り出す
+    priority_queue<State *, vector<State *>, function<bool(State *, State *)>> que([](State *s, State *t) { return *s < *t; });  // スコアが高い順に取り出す
     que.push(init);
 
     State *ans = nullptr;
@@ -56,20 +53,19 @@ int main() {
         State *s = que.top();
         que.pop();
         Place cp = *s->place;
-        if (is_goal(s) &&
-            (ans == nullptr || *s > *ans))  // スコアが高ければ解を更新
+        // 全スポットを訪れたら終了
+        if (is_goal(s) && (ans == nullptr || *s > *ans))  // スコアが高ければ解を更新
         {
             ans = s;
             continue;
         }
-        if (s->arrive_at + cp.stay_time + A[cp.id][0] >
-            places[0].arrive_before) {
+        // 現在の場所で滞在してから0に戻ると間に合わない場合
+        if (s->arrive_at + cp.stay_time + A[cp.id][0] > places[0].arrive_before) {
             auto tmp = new State();
             auto prev = s->prev;
-            tmp->place = &places[0];
+            tmp->place = &places[0];  // 最初の場所に戻る
             tmp->prev = prev;
-            tmp->arrive_at = prev->arrive_at + prev->place->stay_time +
-                             A[prev->place->id][0];
+            tmp->arrive_at = prev->arrive_at + prev->place->stay_time + A[prev->place->id][0];
             tmp->visited = (s->visited ^ (1 << cp.id)) | (1 << 0);
             if (ans == nullptr || *tmp > *ans) {
                 ans = tmp;
@@ -78,9 +74,10 @@ int main() {
         }
 
         rep(i, N) {
-            if (s->visited >> i & 1 || (i == 0 && s->visited_len() != N - 1))
-                continue;
-            int arrive_at = s->arrive_at + cp.stay_time + A[cp.id][i];
+            // 訪れたことがある場所はスキップ
+            if (s->visited >> i & 1 || (i == 0 && s->visited_len() != N - 1)) continue;
+            int arrive_at = s->arrive_at + cp.stay_time + A[cp.id][i];  // 滞在時間と移動時間を足す
+            // 到着時間が制約を満たさない場合はスキップ
             if (!places[i].is_visitable(arrive_at)) continue;
             State *next = new State();
             next->place = &places[i];
