@@ -21,7 +21,7 @@ struct State : public StateBase {
 int main() {
     time_t start = time(nullptr);
     cin >> N;
-    vector<vector<int>> A(N, vector<int>(N));
+    vvi A(N, vi(N));
     rep(i, N) rep(j, N) cin >> A[i][j];
 
     places.resize(N);

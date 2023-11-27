@@ -11,6 +11,8 @@ using namespace std;
 // 型の定義
 
 using ll = long long;
+using vi = vector<int>;
+using vvi = vector<vi>;
 
 // 営業時間を表す構造体
 struct BusinessHours {
