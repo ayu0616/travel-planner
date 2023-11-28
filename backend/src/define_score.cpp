@@ -16,6 +16,11 @@ struct State : public StateBase {
         }
         return s;
     }
+
+    // ゴール判定
+    bool is_goal() const{
+        return visited == (1 << N) - 1;
+    }
 };
 
 int main() {
@@ -42,9 +47,6 @@ int main() {
     init->arrive_at = 0;
     init->visited = 0;
 
-    // ゴール判定
-    auto is_goal = [&](State *s) { return s->visited == (1 << N) - 1; };
-
     priority_queue<State *, vector<State *>, function<bool(State *, State *)>> que([](State *s, State *t) { return *s < *t; });  // スコアが高い順に取り出す
     que.push(init);
 
@@ -54,7 +56,7 @@ int main() {
         que.pop();
         Place cp = *s->place;
         // 全スポットを訪れたら終了
-        if (is_goal(s) && (ans == nullptr || *s > *ans))  // スコアが高ければ解を更新
+        if (s->is_goal() && (ans == nullptr || *s > *ans))  // スコアが高ければ解を更新
         {
             ans = s;
             continue;
