@@ -12,8 +12,12 @@ for i in range(n):
 lines: list[list[int]] = []
 for _ in range(n):
     lines.append([])
-    lines[-1].append(-1 if random.random() < 0.33 else random.randint(15, 8 * 60 * 60))
-    lines[-1].append(-1)
+    ab = -1 if random.random() < 0.5 else random.randint(15, 8 * 60 * 60)
+    lines[-1].append(ab)
+    if ab == -1:
+        ab = 8 * 60 * 60
+    aa = -1 if random.random() < 0.5 else max(-1, ab - 30 * 60 - random.randint(0, 8 * 60 * 60))
+    lines[-1].append(aa)
     lines[-1].append(random.randint(15 // 5, 90 // 5) * 5 * 60)
     lines[-1].append(random.randint(1, 3))
 
