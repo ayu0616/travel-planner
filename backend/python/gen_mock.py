@@ -22,6 +22,7 @@ for _ in range(n):
     lines[-1].append(random.randint(1, 3))
 
 lines[0][0] = 8 * 60 * 60  # 最初の地点に8時間以内に到着するようにする
+lines[0][2] = 0  # 最初の地点の滞在時間は0にする
 
 with open("./in.txt", "w") as f:
     print(n, file=f)
