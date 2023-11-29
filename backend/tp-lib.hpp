@@ -14,6 +14,19 @@ using ll = long long;
 using vi = vector<int>;
 using vvi = vector<vi>;
 
+// 出力のオーバーロード
+
+template <typename T>
+ostream &operator<<(ostream &os, const vector<T> &v) {
+    rep(i, v.size()) {
+        cout << v[i];
+        if (i != v.size() - 1) {
+            cout << " ";
+        }
+    }
+    return os;
+}
+
 // 営業時間を表す構造体
 struct BusinessHours {
     int start;
@@ -142,6 +155,7 @@ struct StateBase {
     StateBase *prev;
     int arrive_at;
     ll visited;
+    bool is_end = false;
 
     StateBase() {
         place = nullptr;
@@ -166,24 +180,7 @@ struct StateBase {
     int visited_len() const { return popcount((unsigned ll)visited); }
 
     // スコア関数
-    virtual int score() const = 0;
-};
-
-template <StateBaseType T>
-bool operator<(const T &l, const T &r) {
-    return l.score() < r.score();
-};
-template <StateBaseType T>
-bool operator>(const T &l, const T &r) {
-    return r < l;
-};
-template <StateBaseType T>
-bool operator<=(const T &l, const T &r) {
-    return !(l > r);
-};
-template <StateBaseType T>
-bool operator>=(const T &l, const T &r) {
-    return !(l < r);
+    virtual float score() const = 0;
 };
 
 template <StateBaseType T>

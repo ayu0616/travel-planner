@@ -9,8 +9,8 @@ vector<Place> places;
 
 struct State : public StateBase {
     // スコアは高いほうが良い
-    int score() const override {
-        int s = 0;
+    float score() const override {
+        float s = 1 - (float)arrive_at / places[0].arrive_before;  // 到着時間が早いほど良い
         rep(i, N) {
             if (visited >> i & 1) s += places[i].priority;
         }
@@ -18,10 +18,14 @@ struct State : public StateBase {
     }
 
     // ゴール判定
-    bool is_goal() const{
-        return visited == (1 << N) - 1;
-    }
+    bool is_goal() const { return visited == (1 << N) - 1; }
 };
+
+struct compare_state {
+    bool operator()(const State *s, const State *t) const { return s->score() < t->score(); }
+};
+
+using state_pq = priority_queue<State *, vector<State *>, compare_state>;
 
 int main() {
     time_t start = time(nullptr);
@@ -47,31 +51,33 @@ int main() {
     init->arrive_at = 0;
     init->visited = 0;
 
-    priority_queue<State *, vector<State *>, function<bool(State *, State *)>> que([](State *s, State *t) { return *s < *t; });  // スコアが高い順に取り出す
+    state_pq que;  // スコアが高い順に取り出す
     que.push(init);
 
-    State *ans = nullptr;
+    state_pq answers;  // 解となる状態を格納する
     while (!que.empty()) {
         State *s = que.top();
         que.pop();
         Place cp = *s->place;
         // 全スポットを訪れたら終了
-        if (s->is_goal() && (ans == nullptr || *s > *ans))  // スコアが高ければ解を更新
-        {
-            ans = s;
+        if (s->is_goal()) {
+            if (s->is_end) continue;
+            s->is_end = true;
+            answers.push(s);
             continue;
         }
         // 現在の場所で滞在してから0に戻ると間に合わない場合
         if (s->arrive_at + cp.stay_time + A[cp.id][0] > places[0].arrive_before) {
             auto tmp = new State();
             auto prev = s->prev;
+            if (prev->is_end) continue;
+            prev->is_end = true;
             tmp->place = &places[0];  // 最初の場所に戻る
             tmp->prev = prev;
             tmp->arrive_at = prev->arrive_at + prev->place->stay_time + A[prev->place->id][0];
             tmp->visited = (s->visited ^ (1 << cp.id)) | (1 << 0);
-            if (ans == nullptr || *tmp > *ans) {
-                ans = tmp;
-            }
+            tmp->is_end = true;
+            answers.push(tmp);
             continue;
         }
 
@@ -90,13 +96,24 @@ int main() {
         }
     }
 
-    if (ans) {
-        auto visited_places = ans->trace_back();
+    // if (!answers.empty()) {
+    //     auto ans = answers.top();
+    //     auto visited_places = ans->trace_back();
 
-        cout << ans->arrive_at << endl;
-        cout << visited_places << endl;
-        cerr << "time: " << time(nullptr) - start << "s" << endl;
-    } else {
-        cout << "-1" << endl;
+    //     cout << ans->arrive_at << endl;
+    //     cout << visited_places << endl;
+    //     cerr << "time: " << time(nullptr) - start << "s" << endl;
+    // } else {
+    //     cout << "-1" << endl;
+    // }
+
+    for (int i = 0; i < 10 && !answers.empty(); i++) {
+        auto ans = answers.top();
+        answers.pop();
+        auto visited_places = ans->trace_back();
+        vi ids;
+        for (auto p : visited_places) ids.push_back(p->place->id);
+        cout << ids << endl;
+        cout << ans->score() << endl;
     }
 }
