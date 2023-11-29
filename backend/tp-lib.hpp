@@ -14,6 +14,17 @@ using ll = long long;
 using vi = vector<int>;
 using vvi = vector<vi>;
 
+// 便利な関数
+
+template <class T>
+bool chmin(T &a, T &b) {
+    if (b < a) {
+        a = b;
+        return true;
+    }
+    return false;
+}
+
 // 出力のオーバーロード
 
 template <typename T>
