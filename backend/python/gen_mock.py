@@ -3,9 +3,10 @@
 import random
 
 import yaml
+import os
 
 # コンフィグファイルの読み込み
-with open("./mock.config.yaml", "r") as f:
+with open(os.path.join(os.path.dirname(__file__), "mock.config.yaml"), "r") as f:
     config = yaml.safe_load(f)
 
 n = config["n"]
