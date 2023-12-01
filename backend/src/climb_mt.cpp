@@ -22,6 +22,27 @@ struct State {
         path_len = 1;
     }
 
+    // 初期解を構築する
+    void build_init() {
+        arrive_at = {0};
+        visited = 0;
+        path = {0};
+        while (true) {
+            State tmp = *this;
+            int p;
+            while (p = random_int(1, N), tmp.visited >> p & 1) {
+            }
+            tmp.push_back(p);
+            if (!tmp.is_valid()) continue;
+            if (tmp.is_time_over()) {
+                push_back(0);
+                break;
+            } else {
+                *this = tmp;
+            }
+        }
+    }
+
     // スコアは高いほうが良い
     float score() const {
         float s = 1 - (float)arrive_at.back() / places[0].arrive_before;  // 到着時間が早いほど良い
@@ -159,23 +180,7 @@ int main() {
     while (time(nullptr) - start < 3) {
         // 解
         State ans;
-        ans.arrive_at = {0};
-        ans.visited = 0;
-        ans.path = {0};
-        while (true) {
-            State tmp = ans;
-            int p;
-            while (p = random_int(1, N), tmp.visited >> p & 1) {
-            }
-            tmp.push_back(p);
-            if (!tmp.is_valid()) continue;
-            if (tmp.is_time_over()) {
-                ans.push_back(0);
-                break;
-            } else {
-                ans = tmp;
-            }
-        }
+        ans.build_init();
         int ctn_cnt = 0;  // 連続で改善しなかった回数
         while (ctn_cnt < 1000) {
             // insert
