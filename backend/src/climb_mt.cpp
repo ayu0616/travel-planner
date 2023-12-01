@@ -50,7 +50,7 @@ struct State {
     void insert(int i, int j) {
         if (visited >> j & 1) return;
         path.insert(path.begin() + i, j);
-        visited |= 1 << j;
+        visited |= 1LL << j;
         path_len++;
         calc_arrive_at();
     }
@@ -67,13 +67,13 @@ struct State {
         } else if (i_exist) {
             auto i_it = find(all(path), i);
             *i_it = j;
-            visited ^= 1 << i;
-            visited |= 1 << j;
+            visited ^= 1LL << i;
+            visited |= 1LL << j;
         } else if (j_exist) {
             auto j_it = find(all(path), j);
             *j_it = i;
-            visited ^= 1 << j;
-            visited |= 1 << i;
+            visited ^= 1LL << j;
+            visited |= 1LL << i;
         }
         if (i_exist || j_exist) {
             calc_arrive_at();
@@ -83,7 +83,7 @@ struct State {
     void push_back(int i) {
         if (visited >> i & 1) return;
         path.push_back(i);
-        visited |= 1 << i;
+        visited |= 1LL << i;
         path_len++;
         calc_arrive_at();
     }
@@ -91,7 +91,7 @@ struct State {
     // i番目の地点を削除する
     void erase(int i) {
         if (!(visited >> i & 1)) return;
-        visited ^= 1 << path[i];
+        visited ^= 1LL << path[i];
         path.erase(path.begin() + i);
         path_len--;
         calc_arrive_at();
@@ -110,7 +110,7 @@ struct State {
 
     void pop_back() {
         int back = path.back();
-        visited ^= 1 << back;
+        visited ^= 1LL << back;
         path.pop_back();
         arrive_at.pop_back();
         path_len--;
@@ -122,6 +122,13 @@ struct State {
         return tmp.arrive_at.back() > places[0].arrive_before;
     }
 };
+
+int random_int(int l, int r) { return l + rand() % (r - l); }
+
+template <class T>
+T random_choice(const vector<T>& v) {
+    return v[random_int(0, v.size())];
+}
 
 bool operator<(const State& s, const State& t) { return s.score() < t.score(); }
 bool operator>(const State& s, const State& t) { return s.score() > t.score(); }
@@ -146,93 +153,65 @@ int main() {
         places[i].priority = pr;
     }
 
-    // 初期状態
-    State init;
-    init.arrive_at = {0};
-    init.visited = 0;
-    init.path = {0};
-    // while (true) {
-    //     priority_queue<State> best, best_but_time_over;
-    //     for (int i = 1; i < N; i++) {
-    //         if (init.visited >> i & 1) continue;
-    //         State tmp = init;
-    //         tmp.push_back(i);
-    //         if (!tmp.is_valid()) continue;
-    //         if (tmp.is_time_over()) {
-    //             best_but_time_over.push(tmp);
-    //         } else {
-    //             best.push(tmp);
-    //         }
-    //     }
-    //     if (best.size()) {
-    //         init = best.top();
-    //     } else {
-    //         init.push_back(0);
-    //         break;
-    //     }
-    // }
-    while (true) {
-        bool is_time_over = false;
-        for (int i = 1; i < N; i++) {
-            if (init.visited >> i & 1) continue;
-            State tmp = init;
-            tmp.push_back(i);
+    State final_ans;  // 最終的な解
+
+    // 山登り法を3秒間実行する
+    while (time(nullptr) - start < 3) {
+        // 解
+        State ans;
+        ans.arrive_at = {0};
+        ans.visited = 0;
+        ans.path = {0};
+        while (true) {
+            State tmp = ans;
+            int p;
+            while (p = random_int(1, N), tmp.visited >> p & 1) {
+            }
+            tmp.push_back(p);
             if (!tmp.is_valid()) continue;
             if (tmp.is_time_over()) {
-                init.push_back(0);
-                is_time_over = true;
+                ans.push_back(0);
                 break;
             } else {
-                init = tmp;
+                ans = tmp;
             }
         }
-        if (is_time_over) break;
-    }
-    priority_queue<State> que;  // スコアが高い順に取り出す
-    que.push(init);
+        int ctn_cnt = 0;  // 連続で改善しなかった回数
+        while (ctn_cnt < 1000) {
+            // insert
+            State tmp = ans;
+            int idx = random_int(1, tmp.path_len - 1);
+            int p_not_vis;
+            tmp.insert(idx, p_not_vis);
+            if (tmp.is_valid() && tmp.score() > ans.score()) {
+                ans = tmp;
+                cerr << ans.score() << endl;
+                ctn_cnt = 0;
+                continue;
+            }
 
-    priority_queue<State> answers;  // 解となる状態を格納する
-    answers.push(init);
-    while (!que.empty() && time(nullptr) - start < 3) {
-        State s = que.top();
-        // que.pop();
-        priority_queue<State> best;
-        for (int i = 1; i < N; i++) {
-            for (int j = i + 1; j < N; j++) {
-                State tmp = s;
-                if (!(((tmp.visited >> i) & 1) ^ ((tmp.visited >> j) & 1))) continue;
-                tmp.swap(i, j);
-                if (!tmp.is_valid()) continue;
-                best.push(tmp);
+            // swap
+            tmp = ans;
+            int p_vis;
+            while (p_vis = random_choice(tmp.path), p_vis == 0) {
             }
-        }
-        vector<State> best10;
-        rep(i, min(10, (int)best.size())) {
-            best10.push_back(best.top());
-            best.pop();
-        }
-        best10.push_back(s);
-        for (auto b : best10) {
-            best.push(b);
-            for (int i = 1; i < N; i++) {
-                if (b.visited >> i & 1) continue;
-                for (int k = 1; k < b.path_len - 1; k++) {
-                    State tmp = b;
-                    tmp.insert(k, i);
-                    if (!tmp.is_valid()) continue;
-                    best.push(tmp);
-                }
+            while (p_not_vis = random_int(1, N), tmp.visited >> p_not_vis & 1) {
             }
-        }
-        rep(i, min(10, (int)best.size())) {
-            que.push(best.top());
-            answers.push(best.top());
-            best.pop();
-        }
-        cerr << answers.top().score() << endl;
-    }
+            tmp.swap(p_vis, p_not_vis);
+            if (tmp.is_valid() && tmp.score() > ans.score()) {
+                ans = tmp;
+                cerr << ans.score() << endl;
+                ctn_cnt = 0;
+                continue;
+            }
 
-    auto ans = answers.top();
-    cout << ans.score() << endl;
-    cout << ans.path << endl;
+            // 以上の方法で改善しなかった
+            ctn_cnt++;
+        }
+        if (ans.score() > final_ans.score()) {
+            final_ans = ans;
+        }
+    }
+    cout << final_ans.score() << endl;
+    cout << final_ans.path << endl;
 }
