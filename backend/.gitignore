@@ -6,3 +6,6 @@ test.cpp
 
 *.txt
 *.csv
+
+# コンフィグファイル（git管理下のsample-***をコピーして使用する）
+mock.config.yaml
