@@ -1,0 +1,26 @@
+version: "3"
+services:
+    backend:
+        build:
+            context: ./backend
+            dockerfile: ./Dockerfile
+        ports:
+            - 8000:8000
+        networks:
+            - backend
+            - frontend
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: ./Dockerfile
+        ports:
+            - 5173:5173
+        networks:
+            - backend
+            - frontend
+
+networks:
+    backend:
+        driver: bridge
+    frontend:
+        driver: bridge
