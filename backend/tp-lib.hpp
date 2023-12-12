@@ -13,6 +13,7 @@ using namespace std;
 using ll = long long;
 using vi = vector<int>;
 using vvi = vector<vi>;
+using vb = vector<bool>;
 
 // 便利な関数
 
