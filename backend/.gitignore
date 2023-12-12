@@ -9,3 +9,5 @@ test.cpp
 
 # コンフィグファイル（git管理下のsample-***をコピーして使用する）
 mock.config.yaml
+
+__pycache__
