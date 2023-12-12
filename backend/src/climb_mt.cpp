@@ -8,16 +8,18 @@ int N;
 vector<Place> places;
 vvi D;  // 地点間の移動時間
 
+int random_int(int l, int r) { return l + rand() % (r - l); }
+
 // これまでのファイルとは異なる状態を定義する
 struct State {
     vi arrive_at;      // 到着時間
-    ll visited = 0;    // 訪れた場所のビット列
+    vb visited;        // 訪れた場所
     vi path;           // 訪れた場所の順番
     int path_len = 0;  // 訪れた場所の数
 
     State() {
         arrive_at = {0};
-        visited = 0;
+        visited.assign(N, false);
         path = {0};
         path_len = 1;
     }
@@ -25,12 +27,12 @@ struct State {
     // 初期解を構築する
     void build_init() {
         arrive_at = {0};
-        visited = 0;
+        visited.assign(N, false);
         path = {0};
         while (true) {
             State tmp = *this;
             int p;
-            while (p = random_int(1, N), tmp.visited >> p & 1) {
+            while (p = random_int(1, N), tmp.visited[p]) {
             }
             tmp.push_back(p);
             if (!tmp.is_valid()) continue;
@@ -47,13 +49,17 @@ struct State {
     float score() const {
         float s = 1 - (float)arrive_at.back() / places[0].arrive_before;  // 到着時間が早いほど良い
         rep(i, N) {
-            if (visited >> i & 1) s += places[i].priority;
+            if (visited[i]) s += places[i].priority;
         }
         return s;
     }
 
     // ゴール判定
-    bool is_goal() const { return visited == (1 << N) - 1; }
+    bool is_goal() const {
+        for (int i = 0; i < N; i++)
+            if (!visited[i]) return false;
+        return true;
+    }
 
     // 各地点の到着時間を計算する
     void calc_arrive_at() {
@@ -69,17 +75,17 @@ struct State {
 
     // 地点jをi番目に挿入する
     void insert(int i, int j) {
-        if (visited >> j & 1) return;
+        if (visited[j]) return;
         path.insert(path.begin() + i, j);
-        visited |= 1LL << j;
+        visited[j] = true;
         path_len++;
         calc_arrive_at();
     }
 
     // 地点iとjを入れ替える
     void swap(int i, int j) {
-        bool i_exist = visited >> i & 1;
-        bool j_exist = visited >> j & 1;
+        bool i_exist = visited[i];
+        bool j_exist = visited[j];
 
         if (i_exist && j_exist) {
             auto i_it = find(all(path), i);
@@ -88,13 +94,13 @@ struct State {
         } else if (i_exist) {
             auto i_it = find(all(path), i);
             *i_it = j;
-            visited ^= 1LL << i;
-            visited |= 1LL << j;
+            visited[i] = false;
+            visited[j] = true;
         } else if (j_exist) {
             auto j_it = find(all(path), j);
             *j_it = i;
-            visited ^= 1LL << j;
-            visited |= 1LL << i;
+            visited[j] = false;
+            visited[i] = true;
         }
         if (i_exist || j_exist) {
             calc_arrive_at();
@@ -102,17 +108,17 @@ struct State {
     }
 
     void push_back(int i) {
-        if (visited >> i & 1) return;
+        if (visited[i]) return;
         path.push_back(i);
-        visited |= 1LL << i;
+        visited[i] = true;
         path_len++;
         calc_arrive_at();
     }
 
     // i番目の地点を削除する
     void erase(int i) {
-        if (!(visited >> i & 1)) return;
-        visited ^= 1LL << path[i];
+        if (!(visited[path[i]])) return;
+        visited[path[i]] = false;
         path.erase(path.begin() + i);
         path_len--;
         calc_arrive_at();
@@ -131,7 +137,7 @@ struct State {
 
     void pop_back() {
         int back = path.back();
-        visited ^= 1LL << back;
+        visited[back] = false;
         path.pop_back();
         arrive_at.pop_back();
         path_len--;
@@ -143,8 +149,6 @@ struct State {
         return tmp.arrive_at.back() > places[0].arrive_before;
     }
 };
-
-int random_int(int l, int r) { return l + rand() % (r - l); }
 
 template <class T>
 T random_choice(const vector<T>& v) {
@@ -177,7 +181,7 @@ int main() {
     State final_ans;  // 最終的な解
 
     // 山登り法を3秒間実行する
-    while (time(nullptr) - start < 3) {
+    while (time(nullptr) - start < 2) {
         // 解
         State ans;
         ans.build_init();
@@ -190,7 +194,7 @@ int main() {
             tmp.insert(idx, p_not_vis);
             if (tmp.is_valid() && tmp.score() > ans.score()) {
                 ans = tmp;
-                cerr << ans.score() << endl;
+                // cerr << ans.score() << endl;
                 ctn_cnt = 0;
                 continue;
             }
@@ -200,12 +204,12 @@ int main() {
             int p_vis;
             while (p_vis = random_choice(tmp.path), p_vis == 0) {
             }
-            while (p_not_vis = random_int(1, N), tmp.visited >> p_not_vis & 1) {
+            while (p_not_vis = random_int(1, N), tmp.visited[p_not_vis]) {
             }
             tmp.swap(p_vis, p_not_vis);
             if (tmp.is_valid() && tmp.score() > ans.score()) {
                 ans = tmp;
-                cerr << ans.score() << endl;
+                // cerr << ans.score() << endl;
                 ctn_cnt = 0;
                 continue;
             }
@@ -215,6 +219,7 @@ int main() {
         }
         if (ans.score() > final_ans.score()) {
             final_ans = ans;
+            cout << final_ans.score() << endl;
         }
     }
     cout << final_ans.score() << endl;
