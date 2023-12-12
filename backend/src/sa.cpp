@@ -1,0 +1,263 @@
+// 貪欲法で解を構成してから、山登り法で解を改善する
+#include <bits/stdc++.h>
+using namespace std;
+
+#include "../tp-lib.hpp"
+
+int N;
+vector<Place> places;
+vvi D;  // 地点間の移動時間
+
+struct Time {
+    chrono::system_clock::time_point start;
+    Time() { start = chrono::system_clock::now(); }
+
+    // 経過時間をミリ秒で取得
+    ll get() {
+        auto end = chrono::system_clock::now();
+        return chrono::duration_cast<chrono::milliseconds>(end - start).count();
+    }
+
+    bool is_over(ll limit) { return get() > limit; }
+};
+
+int random_int(int l, int r) { return l + rand() % (r - l); }
+double random_double(double l, double r) { return l + (r - l) * rand() / RAND_MAX; }
+
+// これまでのファイルとは異なる状態を定義する
+struct State {
+    vi arrive_at;      // 到着時間
+    vb visited;        // 訪れた場所
+    vi path;           // 訪れた場所の順番
+    int path_len = 0;  // 訪れた場所の数
+
+    State() {
+        arrive_at = {0};
+        visited.assign(N, false);
+        path = {0};
+        path_len = 1;
+    }
+
+    // 初期解を構築する
+    void build_init() {
+        arrive_at = {0};
+        visited.assign(N, false);
+        path = {0};
+        vb used(N, false);
+        while (true) {
+            State tmp = *this;
+            int cur = tmp.path.back();
+            int next = -1;
+            pair<int, int> max_score = {0, -1e9};
+            for (int i = 1; i < N; i++) {
+                if (tmp.visited[i] || used[i]) continue;
+                if (max_score < make_pair(places[i].priority, -D[cur][i])) {
+                    max_score = {places[i].priority, -D[cur][i]};
+                    next = i;
+                }
+            }
+            tmp.push_back(next);
+            used[next] = true;
+            if (!tmp.is_valid()) continue;
+            used[next] = false;
+            if (tmp.is_time_over()) {
+                push_back(0);
+                break;
+            } else {
+                *this = tmp;
+            }
+        }
+    }
+
+    // スコアは高いほうが良い
+    float score() const {
+        float s = 1 - (float)arrive_at.back() / places[0].arrive_before;  // 到着時間が早いほど良い
+        rep(i, N) {
+            if (visited[i]) s += places[i].priority;
+        }
+        return s;
+    }
+
+    // ゴール判定
+    bool is_goal() const {
+        for (int i = 0; i < N; i++)
+            if (!visited[i]) return false;
+        return true;
+    }
+
+    // 各地点の到着時間を計算する
+    void calc_arrive_at() {
+        arrive_at = vi(path_len, 0);
+        rep(i, path_len - 1) { arrive_at[i + 1] = arrive_at[i] + places[path[i]].stay_time + D[path[i]][path[i + 1]]; }
+    }
+
+    // 2地点の訪問順を逆転する
+    void reverse(int i, int j) {
+        std::reverse(path.begin() + i, path.begin() + j + 1);
+        calc_arrive_at();
+    }
+
+    // 地点jをi番目に挿入する
+    void insert(int i, int j) {
+        if (visited[j]) return;
+        path.insert(path.begin() + i, j);
+        visited[j] = true;
+        path_len++;
+        calc_arrive_at();
+    }
+
+    // 地点iとjを入れ替える
+    void swap(int i, int j) {
+        bool i_exist = visited[i];
+        bool j_exist = visited[j];
+
+        if (i_exist && j_exist) {
+            auto i_it = find(all(path), i);
+            auto j_it = find(all(path), j);
+            iter_swap(i_it, j_it);
+        } else if (i_exist) {
+            auto i_it = find(all(path), i);
+            *i_it = j;
+            visited[i] = false;
+            visited[j] = true;
+        } else if (j_exist) {
+            auto j_it = find(all(path), j);
+            *j_it = i;
+            visited[j] = false;
+            visited[i] = true;
+        }
+        if (i_exist || j_exist) {
+            calc_arrive_at();
+        }
+    }
+
+    void push_back(int i) {
+        if (visited[i]) return;
+        path.push_back(i);
+        visited[i] = true;
+        path_len++;
+        calc_arrive_at();
+    }
+
+    // i番目の地点を削除する
+    void erase(int i) {
+        if (!(visited[path[i]])) return;
+        visited[path[i]] = false;
+        path.erase(path.begin() + i);
+        path_len--;
+        calc_arrive_at();
+    }
+
+    // 実行可能解かどうか判定する
+    bool is_valid() const {
+        // 到着時間がオーバーしていないか
+        for (int i = 1; i < path_len; i++) {
+            if (!places[path[i]].is_visitable(arrive_at[i])) return false;
+        }
+
+        // 以上の条件をクリアしていれば実行可能解
+        return true;
+    }
+
+    void pop_back() {
+        int back = path.back();
+        visited[back] = false;
+        path.pop_back();
+        arrive_at.pop_back();
+        path_len--;
+    }
+
+    bool is_time_over() {
+        State tmp = *this;
+        tmp.push_back(0);
+        return tmp.arrive_at.back() > places[0].arrive_before;
+    }
+};
+
+template <class T>
+T random_choice(const vector<T>& v) {
+    return v[random_int(0, v.size())];
+}
+
+bool operator<(const State& s, const State& t) { return s.score() < t.score(); }
+bool operator>(const State& s, const State& t) { return s.score() > t.score(); }
+bool operator==(const State& s, const State& t) { return s.score() == t.score(); }
+bool operator<=(const State& s, const State& t) { return s.score() <= t.score(); }
+bool operator>=(const State& s, const State& t) { return s.score() >= t.score(); }
+
+int main() {
+    Time start = Time();
+    cin >> N;
+    D = vvi(N, vi(N));
+    rep(i, N) rep(j, N) cin >> D[i][j];
+
+    places.resize(N);
+    rep(i, N) {
+        places[i].id = i;
+        int ab, aa, st, pr;
+        cin >> ab >> aa >> st >> pr;
+        if (ab != -1) places[i].arrive_before = ab;
+        if (aa != -1) places[i].arrive_after = aa;
+        places[i].stay_time = st;
+        places[i].priority = pr;
+    }
+
+    double start_temp = 0.75, end_temp = 0.001;
+    constexpr double TIME_LIMIT = 3000;
+    State final_ans;
+
+    // 解
+    State ans;
+    ans.build_init();
+    while (!start.is_over(TIME_LIMIT)) {
+        double temperature = start_temp + (end_temp - start_temp) * (start.get() / TIME_LIMIT);
+
+        // delete
+        {
+            if (ans.path_len > 3) {
+                State tmp = ans;
+                int idx2 = random_int(1, tmp.path_len - 2);
+                tmp.erase(idx2);
+                double prob = exp((tmp.score() - ans.score()) / temperature);
+                if (tmp.is_valid() && prob > random_double(0, 1)) {
+                    ans = tmp;
+                    cerr << ans.score() << endl;
+                }
+            }
+        }
+
+        // insert
+        {
+            State tmp = ans;
+            int idx = random_int(1, tmp.path_len - 1);
+            int p_not_vis;
+            while (p_not_vis = random_int(1, N), tmp.visited[p_not_vis]) {
+            }
+            tmp.insert(idx, p_not_vis);
+            double prob = exp((tmp.score() - ans.score()) / temperature);
+            if (tmp.is_valid() && prob > random_double(0, 1)) {
+                ans = tmp;
+                cerr << ans.score() << endl;
+            }
+        }
+
+        // swap
+        {
+            State tmp = ans;
+            int p_vis;
+            int p_not_vis;
+            while (p_vis = random_choice(tmp.path), p_vis == 0) {
+            }
+            while (p_not_vis = random_int(1, N), tmp.visited[p_not_vis]) {
+            }
+            tmp.swap(p_vis, p_not_vis);
+            double prob = exp((tmp.score() - ans.score()) / temperature);
+            if (tmp.is_valid() && prob > random_double(0, 1)) {
+                ans = tmp;
+                cerr << ans.score() << endl;
+            }
+        }
+    }
+    cout << ans.score() << endl;
+    cout << ans.path << endl;
+}
