@@ -219,7 +219,7 @@ int main() {
         }
         if (ans.score() > final_ans.score()) {
             final_ans = ans;
-            cout << final_ans.score() << endl;
+            cerr << final_ans.score() << endl;
         }
     }
     cout << final_ans.score() << endl;
