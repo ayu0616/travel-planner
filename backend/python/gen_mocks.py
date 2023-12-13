@@ -1,8 +1,12 @@
 import os
+import shutil
 
 from gen_mock import generate, write_mock
 
 os.chdir(os.path.dirname(__file__))
+
+shutil.rmtree("../in", ignore_errors=True)
+os.mkdir("../in")
 
 for i in range(100):
     d_matrix, lines = generate()
