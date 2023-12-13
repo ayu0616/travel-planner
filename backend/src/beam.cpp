@@ -220,12 +220,12 @@ int main() {
         places[i].priority = pr;
     }
 
-    constexpr int BEAM_WIDTH = 10000;
+    constexpr int BEAM_WIDTH = 500;
 
     State s, ans;
     priority_queue<State> states;
     states.emplace(s);
-    while (!time.is_over(10000)) {
+    while (!time.is_over(2000)) {
         priority_queue<State> nexts;
         rep(i, BEAM_WIDTH) {
             if (states.empty()) break;
@@ -240,6 +240,7 @@ int main() {
                 }
             }
         }
+        states = priority_queue<State>();
         rep(i, BEAM_WIDTH) {
             if (nexts.empty()) break;
             states.emplace(nexts.top()), nexts.pop();
