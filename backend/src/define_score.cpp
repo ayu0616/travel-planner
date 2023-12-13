@@ -107,13 +107,19 @@ int main() {
     //     cout << "-1" << endl;
     // }
 
-    for (int i = 0; i < 10 && !answers.empty(); i++) {
-        auto ans = answers.top();
-        answers.pop();
-        auto visited_places = ans->trace_back();
-        vi ids;
-        for (auto p : visited_places) ids.push_back(p->place->id);
-        cout << ids << endl;
-        cout << ans->score() << endl;
-    }
+    // for (int i = 0; i < 10 && !answers.empty(); i++) {
+    //     auto ans = answers.top();
+    //     answers.pop();
+    //     auto visited_places = ans->trace_back();
+    //     vi ids;
+    //     for (auto p : visited_places) ids.push_back(p->place->id);
+    //     cout << ans->score() << endl;
+    //     cout << ids << endl;
+    // }
+    auto ans = answers.top();
+    auto visited_places = ans->trace_back();
+    vi ids;
+    for (auto p : visited_places) ids.push_back(p->place->id);
+    cout << ans->score() << endl;
+    cout << ids << endl;
 }
