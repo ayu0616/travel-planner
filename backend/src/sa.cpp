@@ -8,19 +8,6 @@ int N;
 vector<Place> places;
 vvi D;  // 地点間の移動時間
 
-struct Time {
-    chrono::system_clock::time_point start;
-    Time() { start = chrono::system_clock::now(); }
-
-    // 経過時間をミリ秒で取得
-    ll get() {
-        auto end = chrono::system_clock::now();
-        return chrono::duration_cast<chrono::milliseconds>(end - start).count();
-    }
-
-    bool is_over(ll limit) { return get() > limit; }
-};
-
 int random_int(int l, int r) { return l + rand() % (r - l); }
 double random_double(double l, double r) { return l + (r - l) * rand() / RAND_MAX; }
 

@@ -217,3 +217,16 @@ ostream &operator<<(ostream &os, const vector<T *> &vp) {
     }
     return os;
 }
+
+struct Time {
+    chrono::system_clock::time_point start;
+    Time() { start = chrono::system_clock::now(); }
+
+    // 経過時間をミリ秒で取得
+    ll get() {
+        auto end = chrono::system_clock::now();
+        return chrono::duration_cast<chrono::milliseconds>(end - start).count();
+    }
+
+    bool is_over(ll limit) { return get() > limit; }
+};
