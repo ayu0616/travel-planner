@@ -8,8 +8,6 @@ int N;
 vector<Place> places;
 vvi D;  // 地点間の移動時間
 
-int random_int(int l, int r) { return l + rand() % (r - l); }
-
 // これまでのファイルとは異なる状態を定義する
 struct State {
     vi arrive_at;      // 到着時間

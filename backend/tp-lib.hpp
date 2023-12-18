@@ -230,3 +230,10 @@ struct Time {
 
     bool is_over(ll limit) { return get() > limit; }
 };
+
+int random_int(int l, int r) { return l + rand() % (r - l); }
+double random_double(double l, double r) { return l + (r - l) * rand() / RAND_MAX; }
+template <class T>
+T random_choice(const vector<T> &v) {
+    return v[random_int(0, v.size())];
+}

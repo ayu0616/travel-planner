@@ -8,9 +8,6 @@ int N;
 vector<Place> places;
 vvi D;  // 地点間の移動時間
 
-int random_int(int l, int r) { return l + rand() % (r - l); }
-double random_double(double l, double r) { return l + (r - l) * rand() / RAND_MAX; }
-
 // これまでのファイルとは異なる状態を定義する
 struct State {
     vi arrive_at;      // 到着時間
@@ -187,11 +184,6 @@ struct State {
         return tmp.arrive_at.back() > places[0].arrive_before;
     }
 };
-
-template <class T>
-T random_choice(const vector<T>& v) {
-    return v[random_int(0, v.size())];
-}
 
 bool operator<(const State& s, const State& t) { return s.score < t.score; }
 bool operator>(const State& s, const State& t) { return s.score > t.score; }
