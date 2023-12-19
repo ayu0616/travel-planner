@@ -118,7 +118,7 @@ function App() {
                         ></textarea>
                     </div>
                     <div>
-                        <label htmlFor='pathIndex'>pathIndex</label>
+                        <label htmlFor='pathIndex'>ターン</label>
                         <input
                             id='pathIndex'
                             max={paths.length - 1}
@@ -129,6 +129,7 @@ function App() {
                                 setPathIndex(Number(e.target.value))
                             }
                         />
+                        <span>{pathIndex}</span>
                     </div>
                 </div>
                 <Svg maxHeight={maxHeight} maxWidth={maxWidth}>
