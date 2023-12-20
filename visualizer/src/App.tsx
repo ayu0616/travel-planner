@@ -37,7 +37,7 @@ const convert = (spots: Spot[]): Grid[] => {
     const newSpots = spots.map(({ longitude: x, latitude: y }) => {
         return {
             x: ((x - minX) / width) * maxW + r,
-            y: ((y - minY) / height) * maxH + r,
+            y: ((maxY - y) / height) * maxH + r,
         }
     })
     return newSpots
@@ -161,7 +161,8 @@ function App() {
                                     key={i}
                                     cx={x}
                                     cy={y}
-                                    fill='red'
+                                    fill='pink'
+                                    label={i.toString()}
                                     r={r}
                                 />
                             )
