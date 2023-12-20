@@ -11,6 +11,11 @@ interface Spot {
     stayTime: number
 }
 
+interface Grid {
+    x: number
+    y: number
+}
+
 interface Edge {
     from: number
     to: number
@@ -20,7 +25,7 @@ const r = 10
 const maxHeight = 600
 const maxWidth = 600
 
-const convert = (spots: Spot[]): Spot[] => {
+const convert = (spots: Spot[]): Grid[] => {
     const minX = Math.min(...spots.map(({ longitude: x }) => x))
     const minY = Math.min(...spots.map(({ latitude: y }) => y))
     const maxX = Math.max(...spots.map(({ longitude: x }) => x))
@@ -29,10 +34,11 @@ const convert = (spots: Spot[]): Spot[] => {
     const height = maxY - minY
     const maxH = maxHeight - 2 * r
     const maxW = maxWidth - 2 * r
-    const newSpots: Spot[] = spots.map(({ longitude, latitude, ...rest }) => {
-        const newLongitude = ((longitude - minX) / width) * maxW + r
-        const newLatitude = ((latitude - minY) / height) * maxH + r
-        return { latitude: newLatitude, longitude: newLongitude, ...rest }
+    const newSpots = spots.map(({ longitude: x, latitude: y }) => {
+        return {
+            x: ((x - minX) / width) * maxW + r,
+            y: ((y - minY) / height) * maxH + r,
+        }
     })
     return newSpots
 }
@@ -135,9 +141,8 @@ function App() {
                 >
                     <Svg maxHeight={maxHeight} maxWidth={maxWidth}>
                         {edges.map(({ from, to }, i) => {
-                            const { longitude: x1, latitude: y1 } =
-                                newSpots[from]
-                            const { longitude: x2, latitude: y2 } = newSpots[to]
+                            const { x: x1, y: y1 } = newSpots[from]
+                            const { x: x2, y: y2 } = newSpots[to]
                             return (
                                 <Line
                                     key={i}
@@ -150,7 +155,7 @@ function App() {
                                 />
                             )
                         })}
-                        {newSpots.map(({ longitude: x, latitude: y }, i) => {
+                        {newSpots.map(({ x, y }, i) => {
                             return (
                                 <Circle
                                     key={i}
