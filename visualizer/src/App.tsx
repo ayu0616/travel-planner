@@ -3,28 +3,17 @@ import { useState } from 'react'
 import { Circle, Line, Svg } from './components'
 
 interface Spot {
+    arriveAfter: number
+    arriveBefore: number
     latitude: number
     longitude: number
+    priority: number
+    stayTime: number
 }
 
 interface Edge {
     from: number
     to: number
-}
-
-interface Data {
-    path: number[]
-    spots: Spot[]
-}
-
-const data: Data = {
-    path: [0, 1, 2, 0],
-    spots: [
-        { latitude: 35, longitude: 135 },
-        { latitude: 35.11, longitude: 136.123 },
-        { latitude: 35.234, longitude: 135.798 },
-        { latitude: 34.999, longitude: 135.555 },
-    ],
 }
 
 const r = 10
@@ -40,10 +29,10 @@ const convert = (spots: Spot[]): Spot[] => {
     const height = maxY - minY
     const maxH = maxHeight - 2 * r
     const maxW = maxWidth - 2 * r
-    const newSpots: Spot[] = spots.map(({ longitude, latitude }) => {
+    const newSpots: Spot[] = spots.map(({ longitude, latitude, ...rest }) => {
         const newLongitude = ((longitude - minX) / width) * maxW + r
         const newLatitude = ((latitude - minY) / height) * maxH + r
-        return { latitude: newLatitude, longitude: newLongitude }
+        return { latitude: newLatitude, longitude: newLongitude, ...rest }
     })
     return newSpots
 }
@@ -61,8 +50,22 @@ const inToSpots = (inText: string): Spot[] => {
     const spots: Spot[] = []
     for (const line of lines) {
         if (line === '') continue
-        const [latitude, longitude] = line.split(' ').map((s) => Number(s))
-        spots.push({ latitude, longitude })
+        const [
+            arriveBefore,
+            arriveAfter,
+            stayTime,
+            priority,
+            latitude,
+            longitude,
+        ] = line.split(' ').map((s) => Number(s))
+        spots.push({
+            arriveAfter,
+            arriveBefore,
+            latitude,
+            longitude,
+            priority,
+            stayTime,
+        })
     }
     return spots
 }
@@ -79,7 +82,7 @@ const outToPaths = (outText: string): number[][] => {
 }
 
 function App() {
-    const [inText, setInText] = useState('1 1')
+    const [inText, setInText] = useState('-1 28800 1800 3 1 1')
     const [outText, setOutText] = useState('0')
     const [pathIndex, setPathIndex] = useState(0)
     const spots = inToSpots(inText)
@@ -90,28 +93,22 @@ function App() {
     const edges = pathToEdges(path)
 
     return (
-        <div
-            style={{
-                alignItems: 'center',
-                display: 'flex',
-                height: '100dvh',
-                justifyContent: 'center',
-                width: '100dvw',
-            }}
-        >
-            <div style={{ height: maxHeight, width: maxWidth }}>
-                <div>
-                    <div>
+        <div className='bg-slate-50'>
+            <div className='mx-auto flex max-w-[900px] flex-col items-center gap-4 p-8'>
+                <div className='flex w-full flex-col gap-2 rounded-md border border-slate-200 bg-white p-4'>
+                    <div className='flex flex-col gap-1'>
                         <label htmlFor='in'>入力</label>
                         <textarea
+                            className='rounded-md border border-slate-200 p-2'
                             id='in'
                             value={inText}
                             onChange={(e) => setInText(e.target.value)}
                         ></textarea>
                     </div>
-                    <div>
+                    <div className='flex flex-col gap-1'>
                         <label htmlFor='out'>出力</label>
                         <textarea
+                            className='rounded-md border border-slate-200 p-2'
                             id='out'
                             value={outText}
                             onChange={(e) => setOutText(e.target.value)}
@@ -132,26 +129,40 @@ function App() {
                         <span>{pathIndex}</span>
                     </div>
                 </div>
-                <Svg maxHeight={maxHeight} maxWidth={maxWidth}>
-                    {edges.map(({ from, to }, i) => {
-                        const { longitude: x1, latitude: y1 } = newSpots[from]
-                        const { longitude: x2, latitude: y2 } = newSpots[to]
-                        return (
-                            <Line
-                                key={i}
-                                stroke='black'
-                                strokeWidth={2}
-                                x1={x1}
-                                x2={x2}
-                                y1={y1}
-                                y2={y2}
-                            />
-                        )
-                    })}
-                    {newSpots.map(({ longitude: x, latitude: y }, i) => {
-                        return <Circle key={i} cx={x} cy={y} fill='red' r={r} />
-                    })}
-                </Svg>
+                <div
+                    className='max-w-full rounded-md border border-slate-200 bg-white p-4'
+                    style={{ height: maxHeight, width: maxWidth }}
+                >
+                    <Svg maxHeight={maxHeight} maxWidth={maxWidth}>
+                        {edges.map(({ from, to }, i) => {
+                            const { longitude: x1, latitude: y1 } =
+                                newSpots[from]
+                            const { longitude: x2, latitude: y2 } = newSpots[to]
+                            return (
+                                <Line
+                                    key={i}
+                                    stroke='black'
+                                    strokeWidth={2}
+                                    x1={x1}
+                                    x2={x2}
+                                    y1={y1}
+                                    y2={y2}
+                                />
+                            )
+                        })}
+                        {newSpots.map(({ longitude: x, latitude: y }, i) => {
+                            return (
+                                <Circle
+                                    key={i}
+                                    cx={x}
+                                    cy={y}
+                                    fill='red'
+                                    r={r}
+                                />
+                            )
+                        })}
+                    </Svg>
+                </div>
             </div>
         </div>
     )
