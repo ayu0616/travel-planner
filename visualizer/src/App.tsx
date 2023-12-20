@@ -120,7 +120,7 @@ function App() {
                             onChange={(e) => setOutText(e.target.value)}
                         ></textarea>
                     </div>
-                    <div>
+                    <div className='flex items-center gap-2'>
                         <label htmlFor='pathIndex'>ターン</label>
                         <input
                             id='pathIndex'
@@ -132,7 +132,17 @@ function App() {
                                 setPathIndex(Number(e.target.value))
                             }
                         />
-                        <span>{pathIndex}</span>
+                        {/* <span>{pathIndex}</span> */}
+                        <input
+                            className='rounded border border-slate-200 p-1'
+                            max={paths.length - 1}
+                            min={0}
+                            type='number'
+                            value={pathIndex}
+                            onChange={(e) =>
+                                setPathIndex(Number(e.target.value))
+                            }
+                        />
                     </div>
                 </div>
                 <div
