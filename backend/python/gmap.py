@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
+from functools import lru_cache
 from typing import Optional, TypedDict
 from zoneinfo import ZoneInfo
 
-import googlemaps
+import googlemaps  # type: ignore
 
 
 class Location(TypedDict):
@@ -48,6 +49,7 @@ class GMap(googlemaps.Client):
                 dist[-1].append(row["elements"][i]["duration"]["value"])
         return dist
 
+    @lru_cache()
     def geocode(self, spot: str):
         res = super().geocode(spot, language="ja-JP", region="jp")
         return res
