@@ -202,7 +202,16 @@ bool operator==(const State& s, const State& t) { return s.score == t.score; }
 bool operator<=(const State& s, const State& t) { return s.score <= t.score; }
 bool operator>=(const State& s, const State& t) { return s.score >= t.score; }
 
-int main() {
+int main(int argc, char* argv[]) {
+    double start_temp, end_temp;
+    if (argc >= 3) {
+        start_temp = stod(argv[1]);
+        end_temp = stod(argv[2]);
+    } else {
+        start_temp = 0.75;
+        end_temp = 0.001;
+    }
+
     Time time = Time();
     cin >> N;
     D = vvi(N, vi(N));
@@ -219,7 +228,6 @@ int main() {
         places[i].priority = pr;
     }
 
-    double start_temp = 0.75, end_temp = 0.001;
     constexpr double TIME_LIMIT = 3000;
 
     // 解
