@@ -1,5 +1,9 @@
 ---
 marp: true
+style: |
+    section {
+      font-family: "BIZ UDPGothic", sans-serif;
+    }
 ---
 
 # タイトル
