@@ -15,18 +15,18 @@ scores = [0.0] * len(in_files)
 EXEC_FILE = "../dist/main"
 
 
-def get_scores(exec_file: str):
+def get_scores(exec_file: str, start_temp=0.75, end_temp=0.001):
     global EXEC_FILE, scores
     EXEC_FILE = exec_file
     scores = [0.0] * len(in_files)
     freeze_support()
     with ThreadPoolExecutor(max_workers=50) as executor:
-        executor.map(exec_cpp, in_files)
+        executor.map(exec_cpp, in_files, [start_temp] * len(in_files), [end_temp] * len(in_files))
     return scores
 
 
-def exec_cpp(in_file: str):
-    res = subprocess.run(f"{EXEC_FILE} < {in_file}", shell=True, stdout=subprocess.PIPE)
+def exec_cpp(in_file: str, start_temp=0.75, end_temp=0.001):
+    res = subprocess.run(f"{EXEC_FILE} < {in_file} {start_temp} {end_temp}", shell=True, stdout=subprocess.PIPE)
     s = float(res.stdout.decode().split("\n")[0])
     global scores
     scores[int(os.path.basename(in_file).split(".")[0])] = s
