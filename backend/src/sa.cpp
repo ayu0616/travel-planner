@@ -167,6 +167,17 @@ struct State {
         return true;
     }
 
+    // 実行可能解かどうか判定する（緩和版）
+    bool is_valid_relax() const {
+        if (arrive_at.back() > places[0].arrive_before) return false;
+        int over_cnt = 0;
+        // 到着時間がオーバーしていないか
+        for (int i = 1; i < path_len; i++) {
+            if (!places[path[i]].is_visitable(arrive_at[i])) over_cnt++;
+        }
+        return over_cnt <= 1;
+    }
+
     void pop_back() {
         int back = path.back();
         visited[back] = false;
@@ -192,7 +203,7 @@ bool operator<=(const State& s, const State& t) { return s.score <= t.score; }
 bool operator>=(const State& s, const State& t) { return s.score >= t.score; }
 
 int main() {
-    Time start = Time();
+    Time time = Time();
     cin >> N;
     D = vvi(N, vi(N));
     rep(i, N) rep(j, N) cin >> D[i][j];
@@ -210,43 +221,47 @@ int main() {
 
     double start_temp = 0.75, end_temp = 0.001;
     constexpr double TIME_LIMIT = 3000;
-    State final_ans;
 
     // 解
-    State ans;
+    State ans, final_ans;
     ans.build_init();
-    while (!start.is_over(TIME_LIMIT)) {
-        double temperature = start_temp + (end_temp - start_temp) * (start.get() / TIME_LIMIT);
+    final_ans = ans;
 
-        // delete
-        {
+    auto update_ans = [&](const State& tmp, const double& temperature = 0.00001) {
+        double prob = exp((tmp.score - ans.score) / temperature);
+        // if(prob > random_double(0, 1) && tmp.is_valid_relax()) {
+        //     ans = tmp;
+        //     if (final_ans < ans && ans.is_valid()) final_ans = ans;
+        // }
+        if (tmp.is_valid() && prob > random_double(0, 1)) {
+            ans = tmp;
+            if (final_ans < ans) final_ans = ans;
+        }
+    };
+
+    while (!time.is_over(TIME_LIMIT)) {
+        double temperature = start_temp + (end_temp - start_temp) * (time.get() / TIME_LIMIT);
+
+        auto del = [&]() {
             if (ans.path_len > 3) {
                 State tmp = ans;
                 int idx2 = random_int(1, tmp.path_len - 2);
                 tmp.erase(idx2);
-                double prob = exp((tmp.score - ans.score) / temperature);
-                if (tmp.is_valid() && prob > random_double(0, 1)) {
-                    ans = tmp;
-                }
+                update_ans(tmp, temperature);
             }
-        }
+        };
 
-        // insert
-        {
+        auto insert = [&]() {
             State tmp = ans;
             int idx = random_int(1, tmp.path_len - 1);
             int p_not_vis;
             while (p_not_vis = random_int(1, N), tmp.visited[p_not_vis]) {
             }
             tmp.insert(idx, p_not_vis);
-            double prob = exp((tmp.score - ans.score) / temperature);
-            if (tmp.is_valid() && prob > random_double(0, 1)) {
-                ans = tmp;
-            }
-        }
+            update_ans(tmp, temperature);
+        };
 
-        // swap
-        {
+        auto swap = [&]() {
             State tmp = ans;
             int p_vis;
             int p_not_vis;
@@ -255,12 +270,15 @@ int main() {
             while (p_not_vis = random_int(1, N), tmp.visited[p_not_vis]) {
             }
             tmp.swap(p_vis, p_not_vis);
-            double prob = exp((tmp.score - ans.score) / temperature);
-            if (tmp.is_valid() && prob > random_double(0, 1)) {
-                ans = tmp;
-            }
+            update_ans(tmp, temperature);
+        };
+
+        del();
+        rep(i, 100) {
+            insert();
+            swap();
         }
     }
-    cout << ans.score << endl;
-    cout << ans.path << endl;
+    cout << final_ans.score << endl;
+    cout << final_ans.path << endl;
 }
