@@ -11,3 +11,8 @@ test.cpp
 mock.config.yaml
 
 __pycache__
+
+# スライド関係
+slide/*.pdf
+slide/*.html
+slide/*.pptx
