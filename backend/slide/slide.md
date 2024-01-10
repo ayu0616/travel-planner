@@ -18,6 +18,10 @@ style: |
     section.lead h1 {
         text-align: center;
     }
+
+    section > div{
+        padding: 1em;
+    }
 math: mathjax
 ---
 
@@ -27,14 +31,14 @@ math: mathjax
 
 # 効率厨のための旅行計画アルゴリズム
 
-<p style="text-align: end;">経済学部3年 小川歩夢</p>
+<p class="text-right">経済学部3年 小川歩夢</p>
 
 ## 問題設定
 
 <div>
 
 行きたいスポットを列挙し、その中で最も満足度が高い旅行計画を作りたい！！！
-<div style="display: flex;">
+<div class="flex gap-4">
 
 <div>
 
@@ -62,3 +66,6 @@ math: mathjax
 
 <div>
 </div>
+
+<script src="https://cdn.tailwindcss.com/3.0.0"></script>
+<script src="./tailwind.config.js"></script>
