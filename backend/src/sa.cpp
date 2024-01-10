@@ -208,8 +208,8 @@ int main(int argc, char* argv[]) {
         start_temp = stod(argv[1]);
         end_temp = stod(argv[2]);
     } else {
-        start_temp = 0.75;
-        end_temp = 0.001;
+        start_temp = 0.64;
+        end_temp = 0.34;
     }
 
     Time time = Time();
