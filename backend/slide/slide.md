@@ -148,35 +148,15 @@ math: mathjax
 
     |集合|bitでの表現|
     |--|--|
-    |$\{1, 3\}$|`0101` $\rightarrow$ `5`|
-    |$\{2\}$|`0010` $\rightarrow$ `2`|
+    |$\{0, 2\}$|`0101` $\rightarrow$ `5`|
+    |$\{1\}$|`0010` $\rightarrow$ `2`|
     |$\emptyset$|`0000` $\rightarrow$ `0`|
 
 - DP: 動的計画法（部分問題に分割して解く）
 
 ## 巡回セールスマン問題を解く
 
-<div class="grid grid-flow-col justify-stretch gap-4">
-
-<div>
-
-頂点数を$n$とする。
-訪問の仕方を全探索しようとすると、$n!$通りある。
-bitDPを使うと、$O(2^n n^2)$で解くことができる。
-
-</div>
-
-<div>
-
-<image src="./bitDP-graph.png" class="h-2/3"/>
-
-- <span class="text-green-800">**緑**</span> : $\log_2{(x!)}$
-- <span class="text-blue-800">**青**</span> : $\log_2{(2^x x^2)}$
-
-</div>
-</div>
-
-## 巡回セールスマン問題を解く
+<div class="text-2xl">
 
 次の更新式をすべての集合、すべての頂点について計算する。
 $$
@@ -193,5 +173,33 @@ $dp[S][v]$は訪問済みスポット$S$、最後に訪問したスポットが$
 
 求めたい解は、$dp[V][0]$である。（$V$は頂点全体の集合で、スポット$0$に戻ってくるから）
 
-<script src="https://cdn.tailwindcss.com/3.0.0"></script>
+経路は前に訪れた頂点を格納する配列を作り、$prev[V][0] = v$ならつぎは、$prev[V \backslash \{v\}][v]$と辿っていくことにより復元できる
+
+</div>
+
+## 巡回セールスマン問題を解く
+
+<div class="grid grid-flow-col justify-stretch gap-4">
+
+<div>
+
+頂点数を$n$とする。
+訪問の仕方を全探索しようとすると、$n!$通りある。
+bitDPを使うと、$O(2^n n^2)$で解くことができる。
+
+とは言っても、家庭用のPCでは$n=20$を越えたあたりで天文学的な時間がかかるようになる
+
+</div>
+
+<div>
+
+<image src="./bitDP-graph.png" class="h-2/3"/>
+
+- <span class="text-green-800">**緑**</span> : $\log_2{(x!)}$
+- <span class="text-blue-800">**青**</span> : $\log_2{(2^x x^2)}$
+
+</div>
+</div>
+
+<script src="https://cdn.tailwindcss.com/"></script>
 <script src="./tailwind.config.js"></script>
