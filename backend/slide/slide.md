@@ -401,6 +401,8 @@ $$
 
 ## 焼きなましのスコアが伸び悩んだ理由の考察
 
+焼きなましの良さが出なかったから？
+
 ### 制約の厳しさ
 
 <div class="grid grid-flow-col justify-stretch gap-6 h-full">
@@ -411,8 +413,23 @@ $$
 - 多始点山登りは↑の問題を回避できる
 
 </div>
-<image src="./ans-set.svg" class="self-center" />
+<image src="./ans-set.svg" class="h-5/6" />
 </div>
+
+## 焼きなましのスコアが伸び悩んだ理由の考察
+
+改善を試みたが、、、
+
+### 制約違反を許容してみた
+
+- 結論 ： うまくいかなかった
+- 理由 ： スポットを訪問すればするほどスコアが上がるから
+  - 「24時間休まず観光」みたいな解になっていく
+
+### 制約違反のスポットを1つのみに限定してみた
+
+- 結論 ： うまくいかなかった
+- 理由 ： 近傍に制約を満たす解がないような場所に収束することが多いから
 
 <script src="https://cdn.tailwindcss.com/"></script>
 <script src="./tailwind.config.js"></script>
