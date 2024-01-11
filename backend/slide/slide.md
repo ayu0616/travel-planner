@@ -277,5 +277,24 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 - 遺伝的アルゴリズム
 - ビームサーチ
 
+## 今回使ったヒューリスティック
+
+<image src="./heuristic.png" />
+
+<div class="text-lg flex justify-end mt-2">
+
+- <https://qiita.com/square1001/items/84604f79f55ff10d99b0>
+
+</div>
+
+## スコアの比較
+
+<div class="grid grid-flow-col justify-stretch gap-4 items-center h-full">
+
+<image src="comp-score-density.png" class="object-cover" />
+<image src="comp-score-box.png" class="object-cover" />
+
+</div>
+
 <script src="https://cdn.tailwindcss.com/"></script>
 <script src="./tailwind.config.js"></script>
