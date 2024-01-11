@@ -6,6 +6,7 @@ style: |
         font-family: "BIZ UDPGothic", sans-serif;
         justify-content: start;
     }
+    div.mermaid { all: unset; }
     h1, h2, h3, h4, h5, h6 {
         color: #691f80;
         font-weight: bold;
@@ -44,8 +45,8 @@ math: mathjax
 
 - 制約
   - 到着時刻
-  - 上限（任意）
-  - 下限（任意）
+    - 上限（任意）
+    - 下限（任意）
   - 営業時間（任意）
   - 滞在時間
 
@@ -200,6 +201,82 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 
 </div>
 </div>
+
+## 制約やスコアを考慮する
+
+### スポット（再掲）
+
+<div class="grid grid-flow-col justify-stretch gap-4">
+
+<div>
+
+- 制約
+  - 到着時刻
+    - 上限（任意）
+    - 下限（任意）
+  - 営業時間（任意）
+  - 滞在時間
+
+</div>
+<div>
+
+- スコア
+  - 満足度 ： 1〜3の3段階
+  - 満足度の合計が同じなら所要時間が短い方が良い
+
+</div>
+</div>
+
+## 以降の問題設定
+
+- 制約を満たすように解を構成
+- すべてのスポットを訪問する必要はない
+  - 行きたいスポットが多いが、時間が少ない場合もある
+
+## 枝刈りしながら全探索
+
+<div class="grid grid-flow-col justify-stretch gap-4">
+<div>
+
+### アルゴリズム
+
+- 未訪問のスポットを後ろに付け足す
+- 制約を満たすか判定する
+  - 満たさない場合は枝刈りする
+- 出発地に戻ったら、スコアを計算する
+  - スコアが最大なら解を更新する
+
+</div>
+<div>
+
+### 考察
+
+- 制約が多い場合はかなり有効な方法
+- とはいっても全探索なので、スポット数が大きくなると厳しい
+
+</div>
+</div>
+
+## 枝刈りしながら全探索
+
+<image src="./edagari.svg" class="h-5/6"/>
+
+## ヒューリスティックとは
+
+> ヒューリスティック（英: heuristic、独: Heuristik）または発見的（手法）とは、必ずしも正しい答えを導けるとは限らないが、ある程度のレベルで正解に近い解を得ることができる方法である。発見的手法では、答えの精度が保証されない代わりに、解答に至るまでの時間が短いという特徴がある。
+
+<div class="text-lg flex justify-end">
+
+- [ヒューリスティック - Wikipedia](https://ja.wikipedia.org/wiki/%E3%83%92%E3%83%A5%E3%83%BC%E3%83%AA%E3%82%B9%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF)
+
+</div>
+
+### メタヒューリスティクスの例
+
+- **山登り法**
+- **焼きなまし法**
+- 遺伝的アルゴリズム
+- ビームサーチ
 
 <script src="https://cdn.tailwindcss.com/"></script>
 <script src="./tailwind.config.js"></script>
