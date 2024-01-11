@@ -361,7 +361,7 @@ p &= \exp{\left(\frac{s' - s}{T}\right)}
 \end{align*}
 $$
 
-- $T_s$ : 初期温度、 $T_e$ : 終了温度、 $t$ : 現在の時間、 $t_e$ : 終了時間
+- $T_s$ : 初期温度、 $T_e$ : 終了温度、 $t$ : 現在の時間、 $t_e$ : 終了時間（3秒）
 - $s$ : 現在のスコア、 $s'$ : 遷移先のスコア
   - $s' - s > 0$のとき、$p > 1$となるので、必ず遷移する
 
@@ -388,6 +388,8 @@ $$
 
 ## スコアの比較
 
+<span class="text-blue-800">**sa**</span>: 焼きなまし法、 <span class="text-orange-600">**climb_mt**</span>: 多始点山登り法
+
 一般に焼きなまし法のほうが良い解を得られると言われているが、、、
 
 <div class="grid grid-flow-col justify-stretch gap-4 items-center h-full">
@@ -395,6 +397,21 @@ $$
 <image src="comp-score-density.png" class="object-cover" />
 <image src="comp-score-box.png" class="object-cover" />
 
+</div>
+
+## 焼きなましのスコアが伸び悩んだ理由の考察
+
+### 制約の厳しさ
+
+<div class="grid grid-flow-col justify-stretch gap-6 h-full">
+<div>
+
+- 遷移可能な近傍が途中でなくなる？
+  - 初期解に強く依存する？
+- 多始点山登りは↑の問題を回避できる
+
+</div>
+<image src="./ans-set.svg" class="self-center" />
 </div>
 
 <script src="https://cdn.tailwindcss.com/"></script>
