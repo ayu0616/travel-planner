@@ -96,8 +96,12 @@ const priorityToColor = (priority: number): string => {
 }
 
 function App() {
-    const [inText, setInText] = useState('1 1 3')
-    const [outText, setOutText] = useState('0')
+    const [inText, setInText] = useState(
+        localStorage.getItem('inText') || '1 1 3',
+    )
+    const [outText, setOutText] = useState(
+        localStorage.getItem('outText') || '0',
+    )
     const [pathIndex, setPathIndex] = useState(0)
     const spots = inToSpots(inText)
     const paths = outToPaths(outText)
@@ -105,6 +109,10 @@ function App() {
 
     const newSpots = convert(spots)
     const edges = pathToEdges(path)
+
+    const score = path.reduce((acc, cur) => {
+        return acc + newSpots[cur].priority
+    }, 0)
 
     return (
         <div className='bg-slate-50'>
@@ -116,7 +124,10 @@ function App() {
                             className='rounded-md border border-slate-200 p-2'
                             id='in'
                             value={inText}
-                            onChange={(e) => setInText(e.target.value)}
+                            onChange={(e) => {
+                                setInText(e.target.value)
+                                localStorage.setItem('inText', e.target.value)
+                            }}
                         ></textarea>
                     </div>
                     <div className='flex flex-col gap-1'>
@@ -125,7 +136,10 @@ function App() {
                             className='rounded-md border border-slate-200 p-2'
                             id='out'
                             value={outText}
-                            onChange={(e) => setOutText(e.target.value)}
+                            onChange={(e) => {
+                                setOutText(e.target.value)
+                                localStorage.setItem('outText', e.target.value)
+                            }}
                         ></textarea>
                     </div>
                     <div className='flex items-center gap-2'>
@@ -152,6 +166,7 @@ function App() {
                             }
                         />
                     </div>
+                    <p>満足度の合計 ： {score}</p>
                 </div>
                 <div
                     className='max-w-full rounded-md border border-slate-200 bg-white p-4'
