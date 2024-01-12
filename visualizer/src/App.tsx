@@ -9,6 +9,7 @@ interface Spot {
 }
 
 interface Grid {
+    priority: number
     x: number
     y: number
 }
@@ -18,9 +19,9 @@ interface Edge {
     to: number
 }
 
-const r = 10
-const maxHeight = 600
-const maxWidth = 600
+const r = 12.5
+const maxHeight = 800
+const maxWidth = 800
 
 const convert = (spots: Spot[]): Grid[] => {
     const minX = Math.min(...spots.map(({ longitude: x }) => x))
@@ -31,8 +32,9 @@ const convert = (spots: Spot[]): Grid[] => {
     const height = maxY - minY
     const maxH = maxHeight - 2 * r
     const maxW = maxWidth - 2 * r
-    const newSpots = spots.map(({ longitude: x, latitude: y }) => {
+    const newSpots = spots.map(({ longitude: x, latitude: y, priority }) => {
         return {
+            priority,
             x: ((x - minX) / width) * maxW + r,
             y: ((maxY - y) / height) * maxH + r,
         }
@@ -49,7 +51,7 @@ const pathToEdges = (path: number[]): Edge[] => {
 }
 
 const inToSpots = (inText: string): Spot[] => {
-    if(inText === '') return []
+    if (inText === '') return []
     const lines = inText.split('\n')
     const spots: Spot[] = []
     for (const line of lines) {
@@ -67,7 +69,7 @@ const inToSpots = (inText: string): Spot[] => {
 }
 
 const outToPaths = (outText: string): number[][] => {
-    if(outText === '') return [[]]
+    if (outText === '') return [[]]
     const lines = outText.split('\n')
     const paths: number[][] = []
     for (const line of lines) {
@@ -76,6 +78,21 @@ const outToPaths = (outText: string): number[][] => {
         paths.push(path)
     }
     return paths
+}
+
+const priorityToColor = (priority: number): string => {
+    switch (priority) {
+        case 1:
+            return 'fill-green-200'
+        case 2:
+            return 'fill-yellow-200'
+        case 3:
+            return 'fill-red-200'
+        case 100:
+            return 'fill-red-800'
+        default:
+            return 'fill-gray-200'
+    }
 }
 
 function App() {
@@ -156,15 +173,18 @@ function App() {
                                 />
                             )
                         })}
-                        {newSpots.map(({ x, y }, i) => {
+                        {newSpots.map(({ x, y, priority }, i) => {
                             return (
                                 <Circle
                                     key={i}
+                                    className={priorityToColor(priority)}
                                     cx={x}
                                     cy={y}
-                                    fill='pink'
                                     label={i.toString()}
                                     r={r}
+                                    textClass={
+                                        priority === 100 ? 'fill-white' : ''
+                                    }
                                 />
                             )
                         })}
