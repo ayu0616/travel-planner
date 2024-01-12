@@ -115,9 +115,9 @@ function App() {
     }, 0)
 
     return (
-        <div className='bg-slate-50'>
-            <div className='mx-auto flex max-w-[900px] flex-col items-center gap-4 p-8'>
-                <div className='flex w-full flex-col gap-2 rounded-md border border-slate-200 bg-white p-4'>
+        <div className='w-dvw h-dvh flex overflow-y-auto bg-slate-50 xl:items-center xl:justify-center'>
+            <div className='flex w-full flex-col items-center gap-4 p-8 xl:flex-row xl:items-start'>
+                <div className='flex w-full flex-1 flex-col gap-2 rounded-md border border-slate-200 bg-white p-4'>
                     <div className='flex flex-col gap-1'>
                         <label htmlFor='in'>入力</label>
                         <textarea
