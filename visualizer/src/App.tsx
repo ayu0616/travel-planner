@@ -3,12 +3,9 @@ import { useState } from 'react'
 import { Circle, Line, Svg } from './components'
 
 interface Spot {
-    arriveAfter: number
-    arriveBefore: number
     latitude: number
     longitude: number
     priority: number
-    stayTime: number
 }
 
 interface Grid {
@@ -52,31 +49,25 @@ const pathToEdges = (path: number[]): Edge[] => {
 }
 
 const inToSpots = (inText: string): Spot[] => {
+    if(inText === '') return []
     const lines = inText.split('\n')
     const spots: Spot[] = []
     for (const line of lines) {
         if (line === '') continue
-        const [
-            arriveBefore,
-            arriveAfter,
-            stayTime,
-            priority,
-            latitude,
-            longitude,
-        ] = line.split(' ').map((s) => Number(s))
+        const [latitude, longitude, priority] = line
+            .split(' ')
+            .map((s) => Number(s))
         spots.push({
-            arriveAfter,
-            arriveBefore,
             latitude,
             longitude,
             priority,
-            stayTime,
         })
     }
     return spots
 }
 
 const outToPaths = (outText: string): number[][] => {
+    if(outText === '') return [[]]
     const lines = outText.split('\n')
     const paths: number[][] = []
     for (const line of lines) {
@@ -88,7 +79,7 @@ const outToPaths = (outText: string): number[][] => {
 }
 
 function App() {
-    const [inText, setInText] = useState('-1 28800 1800 3 1 1')
+    const [inText, setInText] = useState('1 1 3')
     const [outText, setOutText] = useState('0')
     const [pathIndex, setPathIndex] = useState(0)
     const spots = inToSpots(inText)
