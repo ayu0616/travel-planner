@@ -169,7 +169,23 @@ function App() {
                             }
                         />
                     </div>
-                    <p>満足度の合計 ： {score}</p>
+                    <div>
+                        <p>満足度の合計 ： {score}</p>
+                    </div>
+                    <div className='flex gap-2'>
+                        <p>優先度：</p>
+                        {[1, 2, 3].map((pr) => (
+                            <Svg style={{ height: 2 * r, width: 2 * r }}>
+                                <Circle
+                                    className={priorityToColor(pr)}
+                                    cx={r}
+                                    cy={r}
+                                    label={pr.toString()}
+                                    r={r}
+                                ></Circle>
+                            </Svg>
+                        ))}
+                    </div>
                 </div>
                 <div
                     className='aspect-square w-full rounded-md border border-slate-200 bg-white p-4 xl:h-full xl:w-auto'
