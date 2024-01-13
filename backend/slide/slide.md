@@ -1,6 +1,7 @@
 ---
 marp: true
 size: 16:9
+lang: ja
 style: |
     section {
         font-family: "BIZ UDPGothic", sans-serif;
@@ -18,6 +19,9 @@ style: |
     section.lead h1 {
         text-align: center;
     }
+    section.narrow {
+       padding: 0;
+    }
     td, th {
         padding: 0.5rem !important;
     }
@@ -26,6 +30,9 @@ style: |
     }
 math: mathjax
 ---
+
+<!-- $width: 1920 -->
+<!-- $height: 1080 -->
 
 <!-- headingDivider: 2 -->
 
@@ -458,7 +465,6 @@ $$
 
 ```csv
 # スポット名, 予定滞在時間(分), 行きたい度
-清水寺, 30, 3
 伏見稲荷大社, 45, 3
 金閣寺, 30, 3
 二条城, 30, 3
@@ -484,7 +490,6 @@ $$
 京都国立博物館, 90, 2
 京都鉄道博物館, 90, 2
 西本願寺, 30, 2
-東本願寺, 30, 2
 京都大学中央食堂, 45, 100
 ```
 
@@ -498,6 +503,14 @@ $$
 
 </div>
 </div>
+
+---
+
+<!-- _class: narrow -->
+
+<!-- <iframe class="border-none h-full w-full" src="https://ayu0616.github.io/travel-planner/"></iframe> -->
+<iframe class="border-none h-full w-full" src="http://localhost:5173/travel-planner"></iframe>
+
 
 ## AHCのすゝめ
 
