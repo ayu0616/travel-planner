@@ -19,7 +19,7 @@ interface Edge {
     to: number
 }
 
-const r = 12.5
+const r = 15
 const maxHeight = 800
 const maxWidth = 800
 
@@ -96,14 +96,15 @@ function App() {
         const maxY = Math.max(...spots.map(({ latitude: y }) => y))
         const width = maxX - minX
         const height = maxY - minY
-        const maxH = (svgRef.current?.clientHeight || maxHeight) - 2 * r
-        const maxW = (svgRef.current?.clientWidth || maxWidth) - 2 * r
+        const _r = r * 1.5
+        const maxH = (svgRef.current?.clientHeight || maxHeight) - 2 * _r
+        const maxW = (svgRef.current?.clientWidth || maxWidth) - 2 * _r
         const newSpots = spots.map(
             ({ longitude: x, latitude: y, priority }) => {
                 return {
                     priority,
-                    x: ((x - minX) / width) * maxW + r,
-                    y: ((maxY - y) / height) * maxH + r,
+                    x: ((x - minX) / width) * maxW + _r,
+                    y: ((maxY - y) / height) * maxH + _r,
                 }
             },
         )
@@ -145,9 +146,10 @@ function App() {
                             }}
                         ></textarea>
                     </div>
-                    <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-4'>
                         <label htmlFor='pathIndex'>ターン</label>
                         <input
+                            className='flex-1 accent-violet-700'
                             id='pathIndex'
                             max={paths.length - 1}
                             min={0}
@@ -159,7 +161,7 @@ function App() {
                         />
                         {/* <span>{pathIndex}</span> */}
                         <input
-                            className='rounded border border-slate-200 p-1'
+                            className='rounded border border-slate-200 px-3 py-2 text-right'
                             max={paths.length - 1}
                             min={0}
                             type='number'
@@ -172,7 +174,7 @@ function App() {
                     <div>
                         <p>満足度の合計 ： {score}</p>
                     </div>
-                    <div className='flex gap-2'>
+                    <div className='flex items-center gap-2'>
                         <p>優先度：</p>
                         {[1, 2, 3].map((pr) => (
                             <Svg style={{ height: 2 * r, width: 2 * r }}>
@@ -204,7 +206,7 @@ function App() {
                                 <Line
                                     key={i}
                                     stroke='black'
-                                    strokeWidth={2}
+                                    strokeWidth={2.5}
                                     x1={x1}
                                     x2={x2}
                                     y1={y1}
@@ -221,6 +223,7 @@ function App() {
                                     cy={y}
                                     label={i.toString()}
                                     r={r}
+                                    selected={path.includes(i)}
                                     textClass={
                                         priority === 100 ? 'fill-white' : ''
                                     }
