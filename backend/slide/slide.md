@@ -22,9 +22,6 @@ style: |
     section.narrow {
        padding: 0;
     }
-    td, th {
-        padding: 0.5rem !important;
-    }
     code {
       font-family: monaco, monospace;
     }
@@ -400,7 +397,7 @@ $$
 
 ## スコアの比較
 
-<span class="text-blue-800">**sa**</span>: 焼きなまし法、 <span class="text-orange-600">**climb_mt**</span>: 多始点山登り法
+<span class="text-blue-800">**sa**</span>: 焼きなまし法、 <span class="text-orange-600">**climb_mt**</span>: 多出発山登り法
 
 一般に焼きなまし法のほうが良い解を得られると言われているが、、、
 
@@ -422,7 +419,7 @@ $$
 
 - 遷移可能な近傍が途中でなくなる？
   - 初期解に強く依存する？
-- 多始点山登りは↑の問題を回避できる
+- 多出発山登りは↑の問題を回避できる
 
 </div>
 <image src="./ans-set.svg" class="h-5/6" />
@@ -504,13 +501,40 @@ $$
 </div>
 </div>
 
+## 実際の観光地でやってみよう
+
+### 結果
+
+<div class="flex justify-center overflow-y-auto text-3xl gap-16">
+
+から | まで | スポット
+:--:|:--:|--
+\- | 09:00 | 京都駅
+09:20 | 09:40 | 三十三間堂
+10:05 | 10:35 | 音羽山清水寺
+10:44 | 10:54 | 八坂庚申堂
+10:58 | 11:18 | 安井金比羅宮
+11:27 | 11:42 | 八坂神社
+12:23 | 12:53 | 京都大学中央食堂
+
+から | まで | スポット
+:--:|:--:|--
+13:15 | 13:35 | 下鴨神社
+13:51 | 14:06 | 京都御所
+14:26 | 14:56 | 錦市場
+15:23 | 15:53 | 二条城
+16:34 | 17:04 | 西本願寺
+17:23 | 17:53 | 京都タワー
+17:54 | \- | 京都駅
+
+</div>
+
 ---
 
 <!-- _class: narrow -->
 
 <!-- <iframe class="border-none h-full w-full" src="https://ayu0616.github.io/travel-planner/"></iframe> -->
 <iframe class="border-none h-full w-full" src="http://localhost:5173/travel-planner"></iframe>
-
 
 ## AHCのすゝめ
 
