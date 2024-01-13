@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { Circle, Line, Svg } from './components'
 
@@ -22,25 +22,6 @@ interface Edge {
 const r = 12.5
 const maxHeight = 800
 const maxWidth = 800
-
-const convert = (spots: Spot[]): Grid[] => {
-    const minX = Math.min(...spots.map(({ longitude: x }) => x))
-    const minY = Math.min(...spots.map(({ latitude: y }) => y))
-    const maxX = Math.max(...spots.map(({ longitude: x }) => x))
-    const maxY = Math.max(...spots.map(({ latitude: y }) => y))
-    const width = maxX - minX
-    const height = maxY - minY
-    const maxH = maxHeight - 2 * r
-    const maxW = maxWidth - 2 * r
-    const newSpots = spots.map(({ longitude: x, latitude: y, priority }) => {
-        return {
-            priority,
-            x: ((x - minX) / width) * maxW + r,
-            y: ((maxY - y) / height) * maxH + r,
-        }
-    })
-    return newSpots
-}
 
 const pathToEdges = (path: number[]): Edge[] => {
     const edges: Edge[] = []
@@ -102,10 +83,32 @@ function App() {
     const [outText, setOutText] = useState(
         localStorage.getItem('outText') || '0',
     )
+    const svgRef = useRef<SVGSVGElement>(null)
     const [pathIndex, setPathIndex] = useState(0)
     const spots = inToSpots(inText)
     const paths = outToPaths(outText)
     const path = paths[pathIndex]
+
+    const convert = (spots: Spot[]): Grid[] => {
+        const minX = Math.min(...spots.map(({ longitude: x }) => x))
+        const minY = Math.min(...spots.map(({ latitude: y }) => y))
+        const maxX = Math.max(...spots.map(({ longitude: x }) => x))
+        const maxY = Math.max(...spots.map(({ latitude: y }) => y))
+        const width = maxX - minX
+        const height = maxY - minY
+        const maxH = (svgRef.current?.clientHeight || maxHeight) - 2 * r
+        const maxW = (svgRef.current?.clientWidth || maxWidth) - 2 * r
+        const newSpots = spots.map(
+            ({ longitude: x, latitude: y, priority }) => {
+                return {
+                    priority,
+                    x: ((x - minX) / width) * maxW + r,
+                    y: ((maxY - y) / height) * maxH + r,
+                }
+            },
+        )
+        return newSpots
+    }
 
     const newSpots = convert(spots)
     const edges = pathToEdges(path)
@@ -115,8 +118,8 @@ function App() {
     }, 0)
 
     return (
-        <div className='w-dvw h-dvh flex overflow-y-auto bg-slate-50 xl:items-center xl:justify-center'>
-            <div className='flex w-full flex-col items-center gap-4 p-8 xl:flex-row xl:items-start'>
+        <div className='flex h-dvh w-dvw bg-slate-50 xl:items-center xl:justify-center'>
+            <div className='flex h-full w-full flex-col items-center gap-4 overflow-y-auto p-8 xl:flex-row xl:items-start'>
                 <div className='flex w-full flex-1 flex-col gap-2 rounded-md border border-slate-200 bg-white p-4'>
                     <div className='flex flex-col gap-1'>
                         <label htmlFor='in'>入力</label>
@@ -169,10 +172,15 @@ function App() {
                     <p>満足度の合計 ： {score}</p>
                 </div>
                 <div
-                    className='max-w-full rounded-md border border-slate-200 bg-white p-4'
-                    style={{ height: maxHeight, width: maxWidth }}
+                    className='aspect-square w-full rounded-md border border-slate-200 bg-white p-4 xl:h-full xl:w-auto'
+                    style={{ maxHeight, maxWidth }}
                 >
-                    <Svg maxHeight={maxHeight} maxWidth={maxWidth}>
+                    <Svg
+                        ref={svgRef}
+                        className='h-fit w-fit'
+                        maxHeight={maxHeight}
+                        maxWidth={maxWidth}
+                    >
                         {edges.map(({ from, to }, i) => {
                             const { x: x1, y: y1 } = newSpots[from]
                             const { x: x2, y: y2 } = newSpots[to]
