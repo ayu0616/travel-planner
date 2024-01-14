@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import { ComponentProps, useState } from 'react'
 
 export interface CircleProps extends ComponentProps<'circle'> {
     label?: string
@@ -13,8 +13,14 @@ export const Circle = ({
     selected = false,
     ...props
 }: CircleProps) => {
+    const [isHovered, setIsHovered] = useState(false)
+
     return (
-        <g>
+        <g
+            className='select-none'
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
             {selected && (
                 <circle
                     r={Number(r) * 1.15}
@@ -25,7 +31,9 @@ export const Circle = ({
             <circle r={r} {...props} />
             {label && (
                 <text
-                    className={textClass}
+                    className={[selected ? 'font-bold' : '', textClass].join(
+                        ' ',
+                    )}
                     dominant-baseline='central'
                     text-anchor='middle'
                     x={props.cx}
@@ -33,6 +41,9 @@ export const Circle = ({
                 >
                     {label}
                 </text>
+            )}
+            {isHovered && (
+                <circle r={r} {...props} className='fill-white opacity-50' />
             )}
         </g>
     )
