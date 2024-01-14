@@ -529,6 +529,27 @@ $$
 
 </div>
 
+## 実際の観光地でやってみよう
+
+<div class="h-full w-[80%] self-center grid grid-cols-5 items-center gap-4">
+
+<image src="./spots/kyoto-st.webp">
+<image src="./spots/sanjuusangendou.webp">
+<image src="./spots/kiyomizu.webp">
+<image src="./spots/yasaka-koshindou.webp">
+<image src="./spots//yasui-konpiraguu.webp">
+<image src="./spots/yasaka-jinja.webp">
+<image src="./spots/chuuou-shokudou.webp">
+<image src="./spots/shimogamo-jinja.webp">
+<image src="./spots/kyoto-gosho.webp">
+<image src="./spots/nishiki-ichiba.webp">
+<image src="./spots/nijou-castle.webp">
+<image src="./spots/nishi-honganji.webp">
+<image src="./spots/kyoto-tower.webp">
+<image src="./spots/kyoto-st.webp">
+
+</div>
+
 ---
 
 <!-- _class: narrow -->
