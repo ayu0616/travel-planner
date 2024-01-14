@@ -207,7 +207,7 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 
 <div>
 
-<image src="./bitDP-graph.webp" class="h-2/3"/>
+<image src="./bitDP-graph.webp" class="h-2/3 drop-shadow-lg rounded-lg"/>
 
 - <span class="text-green-800">**緑**</span> : $\log_2{(x!)}$
 - <span class="text-blue-800">**青**</span> : $\log_2{(2^x x^2)}$
@@ -315,7 +315,7 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 
 ## 今回使ったヒューリスティック
 
-<image src="./heuristic.webp" />
+<image src="./heuristic.webp" class="drop-shadow-lg rounded-lg" />
 
 <div class="text-lg flex justify-end mt-2">
 
@@ -372,7 +372,7 @@ $$
 
 - $T_s$ : 初期温度、 $T_e$ : 終了温度、 $t$ : 現在の時間、 $t_e$ : 終了時間（3秒）
 - $s$ : 現在のスコア、 $s'$ : 遷移先のスコア
-  - $s' - s > 0$のとき、$p > 1$となるので、必ず遷移する
+  - $s' - s > 0$ のとき、 $p > 1$ となるので、必ず遷移する
 
 ## 焼きなまし法の実装
 
@@ -442,7 +442,7 @@ $$
 
 ## 実際の観光地でやってみよう
 
-<image src="kyoto-search-res.webp" class="w-fit h-[95%] self-center object-cover" />
+<image src="kyoto-search-res.webp" class="w-fit h-[95%] self-center object-cover drop-shadow-lg rounded-lg" />
 
 ## 実際の観光地でやってみよう
 
@@ -462,18 +462,17 @@ $$
 
 ```csv
 # スポット名, 予定滞在時間(分), 行きたい度
+京都駅, 0, 0
+音羽山清水寺, 30, 3
 伏見稲荷大社, 45, 3
 金閣寺, 30, 3
 二条城, 30, 3
-平安神宮, 15, 1
 八坂神社, 15, 1
 銀閣寺, 30, 2
+錦市場, 30, 3
 京都御所, 15, 1
 下鴨神社, 20, 2
 上賀茂神社, 20, 2
-貴船神社, 30, 3
-鞍馬寺, 30, 2
-渡月橋, 5, 3
 東寺, 30, 2
 三十三間堂, 20, 2
 八坂庚申堂, 10, 2
@@ -487,7 +486,8 @@ $$
 京都国立博物館, 90, 2
 京都鉄道博物館, 90, 2
 西本願寺, 30, 2
-京都大学中央食堂, 45, 100
+六波羅蜜寺, 30, 1
+京都大学中央食堂, 30, 100
 ```
 
 </div>
