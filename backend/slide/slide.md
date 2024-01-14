@@ -207,7 +207,7 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 
 <div>
 
-<image src="./bitDP-graph.png" class="h-2/3"/>
+<image src="./bitDP-graph.webp" class="h-2/3"/>
 
 - <span class="text-green-800">**緑**</span> : $\log_2{(x!)}$
 - <span class="text-blue-800">**青**</span> : $\log_2{(2^x x^2)}$
@@ -315,7 +315,7 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 
 ## 今回使ったヒューリスティック
 
-<image src="./heuristic.png" />
+<image src="./heuristic.webp" />
 
 <div class="text-lg flex justify-end mt-2">
 
@@ -403,8 +403,8 @@ $$
 
 <div class="grid grid-flow-col justify-stretch gap-4 items-center h-full">
 
-<image src="comp-score-density.png" class="object-cover" />
-<image src="comp-score-box.png" class="object-cover" />
+<image src="comp-score-density.webp" class="object-cover" />
+<image src="comp-score-box.webp" class="object-cover" />
 
 </div>
 
@@ -442,7 +442,7 @@ $$
 
 ## 実際の観光地でやってみよう
 
-<image src="kyoto-search-res.png" class="w-fit h-[95%] self-center object-cover" />
+<image src="kyoto-search-res.webp" class="w-fit h-[95%] self-center object-cover" />
 
 ## 実際の観光地でやってみよう
 
