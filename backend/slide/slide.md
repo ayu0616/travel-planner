@@ -533,8 +533,8 @@ $$
 
 <!-- _class: narrow -->
 
-<!-- <iframe class="border-none h-full w-full" src="https://ayu0616.github.io/travel-planner/"></iframe> -->
-<iframe class="border-none h-full w-full" src="http://localhost:5173/travel-planner"></iframe>
+<iframe class="border-none h-full w-full" src="https://ayu0616.github.io/travel-planner/"></iframe>
+<!-- <iframe class="border-none h-full w-full" src="http://localhost:5173/travel-planner"></iframe> -->
 
 ## AHCのすゝめ
 
