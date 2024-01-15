@@ -4,9 +4,20 @@ size: 16:9
 lang: ja
 style: |
     section {
+        background-color: rgb(248, 250, 252);
         font-family: "BIZ UDPGothic", sans-serif;
         justify-content: start;
         color: #333;
+    }
+    .area {
+        background-color: white;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid #e2e8f0;
+
+    }
+    h3:first-child, h3:first-child {
+        margin-top: 0;
     }
     div.mermaid { all: unset; }
     h1, h2, h3, h4, h5, h6 {
@@ -25,6 +36,12 @@ style: |
     code {
       font-family: monaco, monospace;
     }
+    marp-pre {
+      background-color: white;
+    }
+    ul {
+        margin: 0;
+    }
 math: mathjax
 ---
 
@@ -41,9 +58,9 @@ math: mathjax
 
 ## 問題設定1
 
-<div>
+**行きたいスポットを列挙し、その中で最も満足度が高い旅行計画を作りたい！！！**
 
-行きたいスポットを列挙し、その中で最も満足度が高い旅行計画を作りたい！！！
+<div class="area">
 
 ### スポット
 
@@ -71,7 +88,7 @@ math: mathjax
 
 ## 問題設定2
 
-<div class="grid grid-flow-col justify-stretch gap-4">
+<div class="grid grid-flow-col justify-stretch gap-4 area">
 
 <div>
 
@@ -92,9 +109,9 @@ math: mathjax
 
 ## 単純化してみたら
 
-制約とかややこしいので全部取っ払ってみた
+**制約とかややこしいので全部取っ払ってみた**
 
-<div>
+<div class="area">
 
 ### スポット
 
@@ -114,7 +131,7 @@ math: mathjax
 </div>
 </div>
 
-<div class="grid grid-flow-col justify-stretch gap-4">
+<div class="grid grid-flow-col justify-stretch gap-4 mt-10">
 
 <div>
 
@@ -136,7 +153,7 @@ math: mathjax
 
 ## 巡回セールスマン問題とは
 
-全地点を最短時間（距離）で訪問する経路を求める問題
+**全地点を最短時間（距離）で訪問する経路を求める問題**
 
 > 都市の集合と各2都市間の移動コスト（たとえば距離）が与えられたとき、全ての都市をちょうど一度ずつ巡り出発地に戻る巡回路のうちで総移動コストが最小のものを求める（セールスマンが所定の複数の都市を1回だけ巡回する場合の最短経路を求める）組合せ最適化問題である。
 
@@ -146,13 +163,17 @@ math: mathjax
 
 </div>
 
-<br/>
+<div class="area mt-6">
 
 さっきの単純化した問題は**巡回セールスマン問題に帰着できる！**
 
 - 全スポットを最も短い時間で訪問する順序を求めるから
 
+</div>
+
 ## 巡回セールスマン問題を解く
+
+<div class="area">
 
 **bitDP**と（競プロ界隈で）呼ばれる手法で解くことができる。
 
@@ -165,6 +186,8 @@ math: mathjax
     |$\emptyset$|`0000` $\rightarrow$ `0`|
 
 - DP: 動的計画法（部分問題に分割して解く）
+
+</div class="area">
 
 ## 巡回セールスマン問題を解く
 
@@ -195,7 +218,7 @@ $dp[S][v]$は訪問済みスポット$S$、最後に訪問したスポットが$
 
 <div class="grid grid-flow-col justify-stretch gap-4">
 
-<div>
+<div class="area h-fit">
 
 頂点数を$n$とする。
 訪問の仕方を全探索しようとすると、$n!$通りある。
@@ -217,7 +240,9 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 
 ## 制約やスコアを考慮する
 
-スポット数が増えたり、制約やスコアを考慮すると、bitDPで解くのが難しくなる
+**スポット数が増えたり、制約やスコアを考慮すると、bitDPで解くのが難しくなる**
+
+<div class="area">
 
 ### スポット（再掲）
 
@@ -241,8 +266,11 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 
 </div>
 </div>
+</div>
 
 ## 以降の問題設定
+
+<div class="area">
 
 本来やりたかったこと
 
@@ -250,11 +278,13 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 - すべてのスポットを訪問する必要はない
   - 行きたいスポットが多いが、時間が少ない場合もある
 
+</div>
+
 ## 枝刈りしながら全探索
 
-スポットを足していって、制約違反なら探索打ち切り
+**スポットを足していって、制約違反なら探索打ち切り**
 
-<div class="grid grid-flow-col justify-stretch gap-4">
+<div class="grid grid-flow-col justify-stretch gap-4 area">
 <div>
 
 ### アルゴリズム
@@ -280,7 +310,7 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 
 制約が厳しければ、探索する回数を大幅に削減できる
 
-<image src="./edagari.svg" class="h-5/6"/>
+<image src="./edagari.svg" class="h-5/6 rounded-lg drop-shadow-lg py-2"/>
 
 ## ヒューリスティックとは
 
@@ -293,6 +323,8 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 - [ヒューリスティック - Wikipedia](https://ja.wikipedia.org/wiki/%E3%83%92%E3%83%A5%E3%83%BC%E3%83%AA%E3%82%B9%E3%83%86%E3%82%A3%E3%83%83%E3%82%AF)
 
 </div>
+
+<div class="area mt-6">
 
 ### メタヒューリスティクスの例
 
@@ -310,7 +342,7 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 - ビームサーチ
 
 </div>
-
+</div>
 </div>
 
 ## 今回使ったヒューリスティック
@@ -325,9 +357,9 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 
 ## 焼きなまし法について
 
-確率的にスコアが悪くなる解に移るが、その確率は時間とともに下がっていく
+**確率的にスコアが悪くなる解に移るが、その確率は時間とともに下がっていく**
 
-<div class="grid grid-flow-col justify-stretch gap-4">
+<div class="grid grid-flow-col justify-stretch gap-4 area">
 <div>
 
 ### アルゴリズム
@@ -350,12 +382,19 @@ bitDPを使うと、$O(2^n n^2)$で解くことができる。
 
 ## 焼きなまし法の実装
 
+<div class="area">
+
 ### 初期解の生成
 
-- 到着時刻などの制約を満たす範囲でランダムに生成
+- 到着時刻などの制約を満たす頂点をスコアが高い順に貪欲に選ぶ
+- 選んだスポットを訪問したあとで、出発地に戻ると到着時刻をオーバーする場合は、そのスポットを選ばず、その前のスポットから出発地に戻る
 - 例: $\{0, 1, 3, 0\}$
 
+</div>
+
 ## 焼きなまし法の実装
+
+<div class="area text-2xl">
 
 ### 遷移
 
@@ -374,7 +413,11 @@ $$
 - $s$ : 現在のスコア、 $s'$ : 遷移先のスコア
   - $s' - s > 0$ のとき、 $p > 1$ となるので、必ず遷移する
 
+</div>
+
 ## 焼きなまし法の実装
+
+<div class="area">
 
 ### 近傍解の生成（挿入）
 
@@ -386,7 +429,11 @@ $$
 - ランダムなスポットを削除
   - 例: $\{0, 1, 3, 0\} \rightarrow \{0, 3, 0\}$
 
+</div>
+
 ## 焼きなまし法の実装
+
+<div class="area">
 
 ### 近傍解の生成（交換）
 
@@ -395,26 +442,29 @@ $$
 - 解からランダムなスポットを1つ選び、解に含まれないスポットと交換する
   - 例: $\{0, 1, 3, 0\} \rightarrow \{0, 2, 3, 0\}$
 
+</div>
+
 ## スコアの比較
 
 <span class="text-blue-800">**sa**</span>: 焼きなまし法、 <span class="text-orange-600">**climb_mt**</span>: 多出発山登り法
 
 一般に焼きなまし法のほうが良い解を得られると言われているが、、、
 
-<div class="grid grid-flow-col justify-stretch gap-4 items-center h-full">
+<div class="grid grid-flow-col justify-stretch gap-6 items-center h-full">
 
-<image src="comp-score-density.webp" class="object-cover" />
-<image src="comp-score-box.webp" class="object-cover" />
+<image src="comp-score-density.webp" class="object-cover rounded-lg drop-shadow-lg" />
+<image src="comp-score-box.webp" class="object-cover rounded-lg drop-shadow-lg" />
 
 </div>
 
 ## 焼きなましのスコアが伸び悩んだ理由の考察
 
-焼きなましの良さが出なかったから？
+**焼きなましの良さが出なかったから？**
+
+<div class="area h-full relative">
 
 ### 制約の厳しさ
 
-<div class="grid grid-flow-col justify-stretch gap-6 h-full">
 <div>
 
 - 遷移可能な近傍が途中でなくなる？
@@ -422,12 +472,14 @@ $$
 - 多出発山登りは↑の問題を回避できる
 
 </div>
-<image src="./ans-set.svg" class="h-5/6" />
+<image src="./ans-set.svg" class="h-3/4 absolute top-8 right-8" />
 </div>
 
 ## 焼きなましのスコアが伸び悩んだ理由の考察
 
 改善を試みたが、、、
+
+<div class="area">
 
 ### 制約違反を許容してみた
 
@@ -440,6 +492,8 @@ $$
 - 結論 ： うまくいかなかった
 - 理由 ： 近傍に制約を満たす解がないような場所に収束することが多いから
 
+</div>
+
 ## 実際の観光地でやってみよう
 
 <image src="kyoto-search-res.webp" class="w-fit h-[95%] self-center object-cover drop-shadow-lg rounded-lg" />
@@ -448,12 +502,16 @@ $$
 
 偶然にも、世界的観光地が身近にあった
 
+<div class="area">
+
 ### 問題設定
 
 - 京都駅を9:00に出発し、18:00までに戻ってくる
 - 移動は徒歩限定 （しんどい、、、）
 - スポット間の距離や営業時間はGoogle Maps APIから取得
 - 訪問するスポットの候補と予定滞在時間行きたい度（1〜3）は次のスライド
+
+</div>
 
 ## 実際の観光地でやってみよう
 
@@ -491,7 +549,7 @@ $$
 ```
 
 </div>
-<div>
+<div class="area h-fit">
 
 - 昼食は行列のできる名店、京都大学中央食堂で
   - 必須なので、行きたい度を100に設定
@@ -502,6 +560,8 @@ $$
 </div>
 
 ## 実際の観光地でやってみよう
+
+<div class="area">
 
 ### 結果
 
@@ -528,25 +588,26 @@ $$
 17:54 | \- | 京都駅
 
 </div>
+</div>
 
 ## 実際の観光地でやってみよう
 
-<div class="h-full w-[80%] self-center grid grid-cols-5 items-center gap-4">
+<div class="h-full w-full self-center grid grid-cols-7 items-center gap-4 area">
 
-<image src="./spots/kyoto-st.webp">
-<image src="./spots/sanjuusangendou.webp">
-<image src="./spots/kiyomizu.webp">
-<image src="./spots/yasaka-koshindou.webp">
-<image src="./spots//yasui-konpiraguu.webp">
-<image src="./spots/yasaka-jinja.webp">
-<image src="./spots/chuuou-shokudou.webp">
-<image src="./spots/shimogamo-jinja.webp">
-<image src="./spots/kyoto-gosho.webp">
-<image src="./spots/nishiki-ichiba.webp">
-<image src="./spots/nijou-castle.webp">
-<image src="./spots/nishi-honganji.webp">
-<image src="./spots/kyoto-tower.webp">
-<image src="./spots/kyoto-st.webp">
+<image class="rounded drop-shadow" src="./spots/kyoto-st.webp">
+<image class="rounded drop-shadow" src="./spots/sanjuusangendou.webp">
+<image class="rounded drop-shadow" src="./spots/kiyomizu.webp">
+<image class="rounded drop-shadow" src="./spots/yasaka-koshindou.webp">
+<image class="rounded drop-shadow" src="./spots//yasui-konpiraguu.webp">
+<image class="rounded drop-shadow" src="./spots/yasaka-jinja.webp">
+<image class="rounded drop-shadow" src="./spots/chuuou-shokudou.webp">
+<image class="rounded drop-shadow" src="./spots/shimogamo-jinja.webp">
+<image class="rounded drop-shadow" src="./spots/kyoto-gosho.webp">
+<image class="rounded drop-shadow" src="./spots/nishiki-ichiba.webp">
+<image class="rounded drop-shadow" src="./spots/nijou-castle.webp">
+<image class="rounded drop-shadow" src="./spots/nishi-honganji.webp">
+<image class="rounded drop-shadow" src="./spots/kyoto-tower.webp">
+<image class="rounded drop-shadow" src="./spots/kyoto-st.webp">
 
 </div>
 
@@ -558,6 +619,8 @@ $$
 <!-- <iframe class="border-none h-full w-full" src="http://localhost:5173/travel-planner"></iframe> -->
 
 ## AHCのすゝめ
+
+<div class="area">
 
 ### AHCとは
 
@@ -572,7 +635,9 @@ $$
 - 今学期に入る前ぐらいに始めた
 - A: <span class="text-green-700">緑色</span>, H: <span class="text-sky-500">水色</span> （柔道の帯みたいな概念）
 
-<image src="https://img.atcoder.jp/assets/top/img/logo_bk.svg" class="h-48 absolute right-0 top-0 m-16" />
+</div>
+
+<img src="https://img.atcoder.jp/assets/top/img/logo_bk.svg" class="h-48 absolute right-0 top-0 m-16 rounded !bg-transparent" />
 
 <script src="https://cdn.tailwindcss.com/"></script>
 <script src="./tailwind.config.js"></script>
