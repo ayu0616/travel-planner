@@ -632,7 +632,7 @@ $$
 
 ### 自分は
 
-- 今学期に入る前ぐらいに始めた
+- AHCは今学期に入る前ぐらいに始めた
 - A: <span class="text-green-700">緑色</span>, H: <span class="text-sky-500">水色</span> （柔道の帯みたいな概念）
 
 </div>
