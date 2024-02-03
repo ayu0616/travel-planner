@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from enum import Enum
 from functools import lru_cache
 from typing import Optional, TypedDict
 from zoneinfo import ZoneInfo
@@ -19,6 +20,13 @@ class Location(TypedDict):
     lng: float
 
 
+class DistanceMatrixMode(Enum):
+    """距離行列のモード"""
+
+    DRIVING = "driving"
+    WALKING = "walking"
+
+
 class GMap(googlemaps.Client):
     """Google Maps APIを利用するクラス"""
 
@@ -30,6 +38,7 @@ class GMap(googlemaps.Client):
         origins: list[str],
         destinations: list[str],
         departure_time: Optional[datetime] = None,
+        mode: DistanceMatrixMode = DistanceMatrixMode.WALKING,
     ):
         """距離行列を取得する
 
@@ -41,7 +50,7 @@ class GMap(googlemaps.Client):
         Returns:
             - list[list[int]]: 距離行列（単位は秒）
         """
-        res = super().distance_matrix(origins, destinations, departure_time=departure_time, mode="walking", language="ja-JP", region="jp")
+        res = super().distance_matrix(origins, destinations, departure_time=departure_time, mode=mode.value, language="ja-JP", region="jp")
         dist: list[list[int]] = []
         for row in res["rows"]:
             dist.append([])
